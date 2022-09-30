@@ -206,28 +206,53 @@ type Sparse :: (k -> Type) -> (k -> Type) -> Type
 newtype Sparse v d = Sparse (DMap v d)
 
 -- Get rid of second parameter.
-type Combine :: (k -> Type) -> (k -> Type) -> Constraint
-class Combine k v where
-    combine :: k tup -> v tup -> v tup -> v tup
+type Combine :: (k -> Type) -> Constraint
+class Combine k where
+    combine :: Semigroup (v tup) => k tup -> v tup -> v tup -> v tup
+
+instance Semigroup (Expr v tup) where
+    lhs@(_ :+: _) <> rhs@(_ :+: _) = lhs :+: rhs
+    lhs@(_ :+: _) <> rhs@(_ :*: _) = lhs :+: rhs
+    lhs@(_ :+: _) <> rhs@(FromMat _) = lhs :+: rhs
+    lhs@(_ :+: _) <> rhs@(T _) = lhs :+: rhs
+    lhs@(_ :+: _) <> rhs@(Var _) = lhs :+: rhs
+    lhs@(_ :*: _) <> rhs@(_ :+: _) = lhs :+: rhs
+    lhs@(_ :*: _) <> rhs@(_ :*: _) = lhs :+: rhs
+    lhs@(_ :*: _) <> rhs@(FromMat _) = lhs :+: rhs
+    lhs@(_ :*: _) <> rhs@(T _) = lhs :+: rhs
+    lhs@(_ :*: _) <> rhs@(Var _) = lhs :+: rhs
+    lhs@(FromMat _) <> rhs@(_ :+: _) = lhs :+: rhs
+    lhs@(FromMat _) <> rhs@(_ :*: _) = lhs :+: rhs
+    lhs@(FromMat _) <> rhs@(FromMat _) = lhs :+: rhs
+    lhs@(FromMat _) <> rhs@(T _) = lhs :+: rhs
+    lhs@(FromMat _) <> rhs@(Var _) = lhs :+: rhs
+    lhs@(T _) <> rhs@(_ :+: _) = lhs :+: rhs
+    lhs@(T _) <> rhs@(_ :*: _) = lhs :+: rhs
+    lhs@(T _) <> rhs@(FromMat _) = lhs :+: rhs
+    lhs@(T _) <> rhs@(T _) = lhs :+: rhs
+    lhs@(T _) <> rhs@(Var _) = lhs :+: rhs
+    lhs@(Var _) <> rhs@(_ :+: _) = lhs :+: rhs
+    lhs@(Var _) <> rhs@(_ :*: _) = lhs :+: rhs
+    lhs@(Var _) <> rhs@(FromMat _) = lhs :+: rhs
+    lhs@(Var _) <> rhs@(T _) = lhs :+: rhs
+    lhs@(Var _) <> rhs@(Var _) = lhs :+: rhs
+
+instance Semigroup (Mat tup) where
+    lhs@(Mat _) <> rhs@(Mat _) = lhs `plus` rhs
 
 -- TODO: Generate automatically
-instance Combine Var (Expr Var) where
-    combine X l r = l :+: r
-    combine Y l r = l :+: r
+instance Combine Var where
+    combine X = (<>)
+    combine Y = (<>)
     {-# INLINE combine #-}
 
-instance Combine Var Mat where
-    combine X l r = l `plus` r
-    combine Y l r = l `plus` r
-    {-# INLINE combine #-}
-
-instance (GCompare k, Combine k v) => Semigroup (Sparse k v) where
+instance (GCompare k, Combine k, forall tup. Semigroup (v tup)) => Semigroup (Sparse k v) where
     (Sparse lhs) <> (Sparse rhs) = Sparse $ DMap.unionWithKey combine lhs rhs
 
-instance (GCompare k, Combine k v) => Monoid (Sparse k v) where
+instance (GCompare k, Combine k, forall tup. Semigroup (v tup)) => Monoid (Sparse k v) where
     mempty = Sparse DMap.empty
 
-reverseAD :: forall v d. (GCompare v, SizedSemiring d, Combine v d)
+reverseAD :: forall v d. (GCompare v, Combine v, SizedSemiring d, forall tup. Semigroup (d tup))
           => (forall n' m'. v '(n', m') -> d '(n', m'))
           -> Expr v '(1, 1)
           -> DMap v d

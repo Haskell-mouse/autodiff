@@ -57,12 +57,8 @@ data Arg tup where
 
 deriving instance Show (Arg tup)
 
-instance Combine Arg (Expr Arg) where
-    combine Arg l r = l :+: r
-    {-# INLINE combine #-}
-
-instance Combine Arg Mat where
-    combine Arg l r = l `plus` r
+instance Combine Arg where
+    combine Arg = (<>)
     {-# INLINE combine #-}
 
 instance GEq Arg where
