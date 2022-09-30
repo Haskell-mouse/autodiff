@@ -1,5 +1,3 @@
-{-# LANGUAGE FlexibleInstances #-}
-
 module Lib where
 
 import GHC.Arr hiding (index)
@@ -31,6 +29,12 @@ instance VectorSpace a => VectorSpace (a, a) where
     scale factor (x, y) = (factor `scale` x, factor `scale` y)
     zero = (zero, zero)
 
+type Vec a = Array Int a
+
+dot :: Num a => Vec a -> Vec a -> a
+dot lhs rhs = sum $ zipWith (*) (elems lhs) (elems rhs)
+
+{-
 data Vec a = Vec (Array Int a)
            | Zeros
            deriving Eq
@@ -47,6 +51,14 @@ instance VectorSpace a => VectorSpace (Vec a) where
     scale factor (Vec vec) = Vec $ fmap (factor `scale`) vec
     zero = Zeros
 
+instance Arbitrary a => Arbitrary (Vec a) where
+    arbitrary = oneof [fmap Vec arbitrary, pure Zeros]
+
+index :: Vec a -> Int -> a
+index Zeros _ = 0
+index (Vec arr) i = arr ! i
+-}
+
 instance VectorSpace a => Num (Dual a) where
     Dual x dx + Dual y dy = Dual (x + y) (dx `add` dy)
     Dual x dx * Dual y dy = Dual (x * y) ((x `scale` dy) `add` (y `scale` dx))
@@ -54,13 +66,6 @@ instance VectorSpace a => Num (Dual a) where
     negate (Dual x dx) = Dual (-x) ((-1) `scale` dx)
     abs _ = undefined
     signum = undefined
-
-instance Arbitrary a => Arbitrary (Vec a) where
-    arbitrary = oneof [fmap Vec arbitrary, pure Zeros]
-
-index :: Vec a -> Int -> a
-index Zeros _ = 0
-index (Vec arr) i = arr ! i
 
 f1 :: Num a => a -> a
 f1 x = x * x + 10
@@ -97,30 +102,54 @@ f2_prop tup = let handcrafted = df2' tup
 f2_check = quickCheck f2_prop
 
 f3 :: Num a => Vec a -> a
-f3 x = x `dot` x + 10
-  where dot :: Num a => Vec a -> Vec a -> a
-        dot Zeros _ = 0
-        dot _ Zeros = 0
-        dot (Vec lhs) (Vec rhs) = sum $ zipWith (*) (elems lhs) (elems rhs)
+f3 x = (x `dot` x) + 10
 
 df3 :: Vec Double -> Vec Double
 df3 x = let n = numElements x
-            dxs = listArray (0, n-1) [Dual (x `index` i) (oneHot (0, n-1) i) | i <- [0..n-1]]
-         in f3 dxs
+            dxs = flip fmap [0..n-1] $ \i ->
+                listArray (0, n-1) $ [Dual (x!j) (if i == j then 1 else 0) | j <- [0..n-1]]
+         in listArray (0, n-1) $ fmap (derivative . f3) dxs
 
--- x1^2 + x2^2 + x3^3 + 10
--- df/dx1 = 2x1
+-- f = x1^2 + x2^2 + x3^2 + ... + xn^2 + 10
+-- df = [2x1, 2x2, 2x3, ..., 2xn]
 df3' :: Vec Double -> Vec Double
 df3' x = listArray (0, n-1) [2 * el | el <- elems x]
-  where n = numElements x
+    where n = numElements x
 
-f3_prop :: Vec Double -> Bool
-f3_prop x = df3 x == df3' x
+f3_prop :: [Double] -> Bool
+f3_prop listX = let x = listArray (0, length listX - 1) listX
+                 in df3 x == df3' x
 
 f3_check = quickCheck f3_prop
 
-oneHot :: Ix i => (i, i) -> i -> Array i a
-oneHot bounds i = array bounds [(j, if j == i then 1 else 0) | j <- range bounds]
+data Delta = Zero | Add Delta Delta | Scale Double Delta | OneHot Int
+
+instance VectorSpace Delta where
+    zero = Zero
+    add = Add
+    scale = Scale
+
+oneHot :: (Num a, Ix i) => (i, i) -> i -> Array i a
+oneHot bounds i = listArray bounds $ [if i == j then 1 else 0 | j <- range bounds]
+
+eval :: (Num a, VectorSpace a) => (Int, Int) -> Delta -> Vec a
+eval bounds (OneHot i) = oneHot bounds i
+eval bounds (Add lhs rhs) = listArray bounds $ zipWith add (elems $ eval bounds lhs) (elems $ eval bounds rhs)
+eval bounds (Scale factor delta) = fmap (factor `scale`) $ eval bounds delta
+eval bounds Zero = listArray bounds [0 | _ <- range bounds]
+
+df3_2 :: Vec Double -> Vec Double
+df3_2 x = eval (0, n-1) $ derivative $ f3 dxs
+    where dxs = listArray (0, n-1) $ [Dual (x!i) (OneHot i) | i <- [0..n-1]]
+          n = numElements x
+
+f3_2_prop :: [Double] -> Bool
+f3_2_prop listX = df3_2 x == df3' x
+    where x = listArray (0, n-1) listX
+          n = length listX
+
+f3_2_check = quickCheck f3_2_prop
 
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"
+

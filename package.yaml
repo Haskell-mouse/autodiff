@@ -21,7 +21,38 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - base >= 4.7 && < 5
+- ghc-prim
+- template-haskell
 - QuickCheck
+- dependent-map
+- dependent-sum-template
+- some
+- hmatrix
+- constraints
+- constraints-extras
+
+default-extensions:
+- MultiParamTypeClasses
+- FunctionalDependencies
+- FlexibleInstances
+- GeneralizedNewtypeDeriving
+- PolyKinds
+- StandaloneDeriving
+- DeriveFunctor
+- DeriveGeneric
+- DerivingVia
+- UndecidableInstances
+- ScopedTypeVariables
+- DataKinds
+- KindSignatures
+- StandaloneKindSignatures
+- TypeApplications
+- GADTs
+- QuantifiedConstraints
+- RankNTypes
+- TemplateHaskell
+- TypeOperators
+- TypeFamilies
 
 ghc-options:
 - -Wall
@@ -56,5 +87,6 @@ tests:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -ddump-splices
     dependencies:
     - autodiff
