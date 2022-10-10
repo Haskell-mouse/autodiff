@@ -1,4 +1,20 @@
-module Sized where
+{-# LANGUAGE BangPatterns #-}
+module Sized ( SizedSemiring(..)
+             , Mat(..)
+             , Expr(..)
+             , reverseAD
+             , reverseADEndo
+             , idMat
+             , zeroMat
+             , oneMat
+
+             -- Testing
+             , reverseAD'
+             , reverseAD'Endo
+             , Var(..)
+             , reverseADTopo
+             , reverseADTopoEndo
+             ) where
 
 import GHC.TypeLits
 import Data.Kind
@@ -11,6 +27,8 @@ import Data.GADT.Compare (GCompare, GEq(..))
 import qualified Numeric.LinearAlgebra.Static as LinAlg
 import qualified Numeric.LinearAlgebra as LinAlg (Additive(..))
 import Numeric.LinearAlgebra.Static (L)
+import Control.DeepSeq (NFData(..))
+import Data.Monoid (Endo(..))
 
 import Data.Proxy
 import Type.Reflection
@@ -18,14 +36,19 @@ import Control.Monad (guard)
 
 import Data.Maybe (fromMaybe, fromJust, isJust)
 
-import Debug.Trace
 import Test.QuickCheck
+import Unsafe.Coerce
+import System.IO.Unsafe (unsafePerformIO)
+import Data.IORef
 
 type Mat :: (Nat, Nat) -> Type
 data Mat tup where
     Mat :: (KnownNat n, KnownNat m) => L n m -> Mat '(n, m)
 
 deriving instance (KnownNat n, KnownNat m) => Show (Mat '(n, m))
+
+instance NFData (Mat tup) where
+    rnf (Mat m) = rnf m
 
 instance GEq Mat where
     geq (Mat lhs) (Mat rhs) = do
@@ -44,6 +67,9 @@ idMat = Mat LinAlg.eye
 zeroMat :: (KnownNat n, KnownNat m) => Mat '(n, m)
 zeroMat = Mat $ LinAlg.build (\_ _ -> 0)
 
+oneMat :: (KnownNat n, KnownNat m) => Mat '(n, m)
+oneMat = Mat $ LinAlg.build (\_ _ -> 1)
+
 type SizedSemiring :: ((Nat, Nat) -> Type) -> Constraint
 class SizedSemiring d where
     plus  :: (KnownNat n, KnownNat m) => d '(n, m) -> d '(n, m) -> d '(n, m)
@@ -51,14 +77,20 @@ class SizedSemiring d where
     tr    :: (KnownNat n, KnownNat m) => d '(n, m) -> d '(m, n)
     fromMat :: (KnownNat n, KnownNat m) => Mat '(n, m) -> d '(n, m)
 
+infixl 7 `times`
+infixl 6 `plus`
+
+type SizedModule :: ((Nat, Nat) -> Type) -> ((Nat, Nat) -> Type) -> Constraint
+class (SizedSemiring d, forall tup. Monoid (e tup)) => SizedModule d e | e -> d where
+    vlscale :: forall n k m. (KnownNat n, KnownNat k, KnownNat m) => d '(n, k) -> e '(k, m) -> e '(n, m)
+    vrscale :: forall n k m. (KnownNat n, KnownNat k, KnownNat m) => e '(n, k) -> d '(k, m) -> e '(n, m)
+    vtr :: forall n m. (KnownNat n, KnownNat m) => e '(n, m) -> e '(m, n)
+
 instance SizedSemiring Mat where
     (Mat lhs) `plus` (Mat rhs) = Mat $ lhs `LinAlg.add` rhs
     (Mat lhs) `times` (Mat rhs) = Mat $ (LinAlg.<>) lhs rhs
     tr (Mat mat) = Mat $ LinAlg.tr mat
     fromMat = id
-
-infixl 7 `times`
-infixl 6 `plus`
 
 {-
 tr :: Mat n m -> Mat m n
@@ -112,6 +144,12 @@ infixl 6 :+:
 
 deriving instance (forall n m. Show (v '(n, m)), KnownNat a, KnownNat b) => Show (Expr v '(a, b))
 
+coerceExprSize :: forall v. (forall n m. Expr v '(n, m)) -> (forall tup. Expr v tup)
+coerceExprSize expr = unsafeCoerce expr
+
+coerceExprSize' :: forall n m v. (forall tup. Expr v tup) -> Expr v '(n, m)
+coerceExprSize' expr = unsafeCoerce expr
+
 instance GEq v => GEq (Expr v) where
     geq (Var lhs) (Var rhs) = geq lhs rhs
     geq (FromMat lhs) (FromMat rhs) = geq lhs rhs
@@ -134,8 +172,37 @@ instance SizedSemiring (Expr v) where
     tr = T
     fromMat = FromMat
 
+instance Semigroup (Expr v tup) where
+    -- forall v. (forall tup. Expr v tup -> Expr v tup) ~ (forall n m. Expr v '(n, m) -> Expr v '(n, m))
+    -- (<>) = unsafeCoerce (:+:)
+    lhs@(_ :+: _)   <> rhs@(_ :+: _)   = lhs :+: rhs
+    lhs@(_ :+: _)   <> rhs@(_ :*: _)   = lhs :+: rhs
+    lhs@(_ :+: _)   <> rhs@(FromMat _) = lhs :+: rhs
+    lhs@(_ :+: _)   <> rhs@(T _)       = lhs :+: rhs
+    lhs@(_ :+: _)   <> rhs@(Var _)     = lhs :+: rhs
+    lhs@(_ :*: _)   <> rhs@(_ :+: _)   = lhs :+: rhs
+    lhs@(_ :*: _)   <> rhs@(_ :*: _)   = lhs :+: rhs
+    lhs@(_ :*: _)   <> rhs@(FromMat _) = lhs :+: rhs
+    lhs@(_ :*: _)   <> rhs@(T _)       = lhs :+: rhs
+    lhs@(_ :*: _)   <> rhs@(Var _)     = lhs :+: rhs
+    lhs@(FromMat _) <> rhs@(_ :+: _)   = lhs :+: rhs
+    lhs@(FromMat _) <> rhs@(_ :*: _)   = lhs :+: rhs
+    lhs@(FromMat _) <> rhs@(FromMat _) = lhs :+: rhs
+    lhs@(FromMat _) <> rhs@(T _)       = lhs :+: rhs
+    lhs@(FromMat _) <> rhs@(Var _)     = lhs :+: rhs
+    lhs@(T _)       <> rhs@(_ :+: _)   = lhs :+: rhs
+    lhs@(T _)       <> rhs@(_ :*: _)   = lhs :+: rhs
+    lhs@(T _)       <> rhs@(FromMat _) = lhs :+: rhs
+    lhs@(T _)       <> rhs@(T _)       = lhs :+: rhs
+    lhs@(T _)       <> rhs@(Var _)     = lhs :+: rhs
+    lhs@(Var _)     <> rhs@(_ :+: _)   = lhs :+: rhs
+    lhs@(Var _)     <> rhs@(_ :*: _)   = lhs :+: rhs
+    lhs@(Var _)     <> rhs@(FromMat _) = lhs :+: rhs
+    lhs@(Var _)     <> rhs@(T _)       = lhs :+: rhs
+    lhs@(Var _)     <> rhs@(Var _)     = lhs :+: rhs
+
 eval :: (SizedSemiring d, KnownNat n, KnownNat m)
-     => (forall n' m'. v '(n', m') -> d '(n', m'))
+     => (forall n' m'. (KnownNat n', KnownNat m') => v '(n', m') -> d '(n', m'))
      -> Expr v '(n, m)
      -> d '(n, m)
 eval env (lhs :+: rhs) = eval env lhs `plus` eval env rhs
@@ -160,9 +227,8 @@ reverseADSpecialized' :: (KnownNat n, KnownNat m) => Expr Var '(n, m) -> Expr Va
 reverseADSpecialized' (FromMat _) _ = DMap.empty
 reverseADSpecialized' (Var v) grad = DMap.singleton v grad
 reverseADSpecialized' (T expr) grad = reverseADSpecialized' expr (T grad)
-reverseADSpecialized' (lhs :+: rhs) grad = DMap.unionWithKey combine (reverseADSpecialized' lhs grad) (reverseADSpecialized' rhs grad)
--- NOTE: The complexity of DMap.unionWithKey is O(n + m) for some reason. Not as efficient as it could be?
-reverseADSpecialized' (lhs :*: rhs) grad = DMap.unionWithKey combine leftMap rightMap
+reverseADSpecialized' (lhs :+: rhs) grad = DMap.unionWithKey (const (<>)) (reverseADSpecialized' lhs grad) (reverseADSpecialized' rhs grad)
+reverseADSpecialized' (lhs :*: rhs) grad = DMap.unionWithKey (const (<>)) leftMap rightMap
     where leftMap = reverseADSpecialized' lhs (grad :*: T rhs)
           rightMap = reverseADSpecialized' rhs (T lhs :*: grad)
 
@@ -173,14 +239,14 @@ reverseADSpecialized expr = reverseADSpecialized' expr (FromMat idMat)
 testDerivSpecialized :: DMap Var (Expr Var)
 testDerivSpecialized = reverseADSpecialized testExpr
 
-type SizedModule :: ((Nat, Nat) -> Type) -> ((Nat, Nat) -> Type) -> Constraint
-class (SizedSemiring d, forall tup. Monoid (e tup)) => SizedModule d e | e -> d where
-    vlscale :: forall n k m. (KnownNat n, KnownNat k, KnownNat m) => d '(n, k) -> e '(k, m) -> e '(n, m)
-    vrscale :: forall n k m. (KnownNat n, KnownNat k, KnownNat m) => e '(n, k) -> d '(k, m) -> e '(n, m)
-    vtr :: forall n m. (KnownNat n, KnownNat m) => e '(n, m) -> e '(m, n)
-
 type Dual :: ((Nat, Nat) -> Type) -> ((Nat, Nat) -> Type) -> (Nat, Nat) -> Type
 data Dual d e tup = Dual (d tup) (e tup)
+
+instance SizedModule d e => SizedSemiring (Dual d e) where
+    fromMat mat = Dual (fromMat mat) mempty
+    plus (Dual f df) (Dual g dg) = Dual (f `plus` g) (df <> dg)
+    times (Dual f df) (Dual g dg) = Dual (f `times` g) ((f `vlscale` dg) <> (df `vrscale` g))
+    tr (Dual f df) = Dual (tr f) (vtr df)
 
 type Hom :: ((Nat, Nat) -> Type) -> Type -> (Nat, Nat) -> Type
 newtype Hom d e tup = Hom (d tup -> e)
@@ -196,71 +262,41 @@ instance (SizedSemiring d, Monoid e) => SizedModule d (Hom d e) where
     vrscale (Hom f) factor = Hom $ \grad -> f (grad `times` tr factor)
     vtr (Hom f) = Hom $ \grad -> f (tr grad)
 
-instance SizedModule d e => SizedSemiring (Dual d e) where
-    fromMat mat = Dual (fromMat mat) mempty
-    plus (Dual f df) (Dual g dg) = Dual (f `plus` g) (df <> dg)
-    times (Dual f df) (Dual g dg) = Dual (f `times` g) ((f `vlscale` dg) <> (df `vrscale` g))
-    tr (Dual f df) = Dual (tr f) (vtr df)
-
 type Sparse :: (k -> Type) -> (k -> Type) -> Type
 newtype Sparse v d = Sparse (DMap v d)
-
--- Get rid of second parameter.
-type Combine :: (k -> Type) -> Constraint
-class Combine k where
-    combine :: Semigroup (v tup) => k tup -> v tup -> v tup -> v tup
-
-instance Semigroup (Expr v tup) where
-    lhs@(_ :+: _) <> rhs@(_ :+: _) = lhs :+: rhs
-    lhs@(_ :+: _) <> rhs@(_ :*: _) = lhs :+: rhs
-    lhs@(_ :+: _) <> rhs@(FromMat _) = lhs :+: rhs
-    lhs@(_ :+: _) <> rhs@(T _) = lhs :+: rhs
-    lhs@(_ :+: _) <> rhs@(Var _) = lhs :+: rhs
-    lhs@(_ :*: _) <> rhs@(_ :+: _) = lhs :+: rhs
-    lhs@(_ :*: _) <> rhs@(_ :*: _) = lhs :+: rhs
-    lhs@(_ :*: _) <> rhs@(FromMat _) = lhs :+: rhs
-    lhs@(_ :*: _) <> rhs@(T _) = lhs :+: rhs
-    lhs@(_ :*: _) <> rhs@(Var _) = lhs :+: rhs
-    lhs@(FromMat _) <> rhs@(_ :+: _) = lhs :+: rhs
-    lhs@(FromMat _) <> rhs@(_ :*: _) = lhs :+: rhs
-    lhs@(FromMat _) <> rhs@(FromMat _) = lhs :+: rhs
-    lhs@(FromMat _) <> rhs@(T _) = lhs :+: rhs
-    lhs@(FromMat _) <> rhs@(Var _) = lhs :+: rhs
-    lhs@(T _) <> rhs@(_ :+: _) = lhs :+: rhs
-    lhs@(T _) <> rhs@(_ :*: _) = lhs :+: rhs
-    lhs@(T _) <> rhs@(FromMat _) = lhs :+: rhs
-    lhs@(T _) <> rhs@(T _) = lhs :+: rhs
-    lhs@(T _) <> rhs@(Var _) = lhs :+: rhs
-    lhs@(Var _) <> rhs@(_ :+: _) = lhs :+: rhs
-    lhs@(Var _) <> rhs@(_ :*: _) = lhs :+: rhs
-    lhs@(Var _) <> rhs@(FromMat _) = lhs :+: rhs
-    lhs@(Var _) <> rhs@(T _) = lhs :+: rhs
-    lhs@(Var _) <> rhs@(Var _) = lhs :+: rhs
 
 instance Semigroup (Mat tup) where
     lhs@(Mat _) <> rhs@(Mat _) = lhs `plus` rhs
 
--- TODO: Generate automatically
-instance Combine Var where
-    combine X = (<>)
-    combine Y = (<>)
-    {-# INLINE combine #-}
+instance (GCompare k, forall tup. Semigroup (v tup)) => Semigroup (Sparse k v) where
+    (Sparse lhs) <> (Sparse rhs) = Sparse $ DMap.unionWithKey (const (<>)) lhs rhs
 
-instance (GCompare k, Combine k, forall tup. Semigroup (v tup)) => Semigroup (Sparse k v) where
-    (Sparse lhs) <> (Sparse rhs) = Sparse $ DMap.unionWithKey combine lhs rhs
-
-instance (GCompare k, Combine k, forall tup. Semigroup (v tup)) => Monoid (Sparse k v) where
+instance (GCompare k, forall tup. Semigroup (v tup)) => Monoid (Sparse k v) where
     mempty = Sparse DMap.empty
 
-reverseAD :: forall v d. (GCompare v, Combine v, SizedSemiring d, forall tup. Semigroup (d tup))
+reverseAD :: forall v d. (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup))
           => (forall n' m'. v '(n', m') -> d '(n', m'))
           -> Expr v '(1, 1)
           -> DMap v d
 reverseAD env expr = let Dual _ (Hom rev) = eval env' expr
-                         Sparse map = rev (fromMat idMat)
+                         Sparse map = rev $ fromMat idMat
                       in map
-    where env' :: forall n' m'. v '(n', m') -> Dual d (Hom d (Sparse v d)) '(n', m')
+    where env' :: forall n' m'. (KnownNat n', KnownNat m')
+               => v '(n', m')
+               -> Dual d (Hom d (Sparse v d)) '(n', m')
           env' v = Dual (env v) (Hom $ \grad -> Sparse $ DMap.singleton v grad)
+
+reverseADEndo :: forall v d. (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup))
+              => (forall n' m'. v '(n', m') -> d '(n', m'))
+              -> Expr v '(1, 1)
+              -> DMap v d
+reverseADEndo env expr = let Dual _ (Hom rev) = eval env' expr
+                             Sparse map = appEndo (rev $ fromMat idMat) mempty
+                          in map
+    where env' :: forall n' m'. (KnownNat n', KnownNat m')
+               => v '(n', m')
+               -> Dual d (Hom d (Endo (Sparse v d))) '(n', m')
+          env' v = Dual (env v) (Hom $ \grad -> Endo $ \(Sparse acc) -> Sparse $ DMap.insertWith plus v grad acc)
 
 testExpr :: Expr Var '(1, 1)
 testExpr = FromMat m1 :*: Var X :*: Var Y :*: FromMat m2
@@ -362,3 +398,179 @@ valueTestDirect = do
           env :: Var '(n, m) -> Mat '(n, m)
           env X = Mat $ LinAlg.matrix [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
           env Y = Mat $ LinAlg.matrix [1, 2, 3, 4, 5, 6]
+
+{-
+type Sparse' :: (k -> Type) -> (k -> Type) -> (Nat, Nat) -> Type
+newtype Sparse' v d tup = Sparse' (DMap v d)
+
+instance (SizedSemiring d) => SizedModule d (Sparse' v d) where
+    vlscale :: forall n k m. (KnownNat n, KnownNat k, KnownNat m) => d '(n, k) -> e '(k, m) -> e '(n, m)
+    vlscale d (Sparse' m) = 
+    vrscale :: forall n k m. (KnownNat n, KnownNat k, KnownNat m) => e '(n, k) -> d '(k, m) -> e '(n, m)
+    vtr :: forall n m. (KnownNat n, KnownNat m) => e '(n, m) -> e '(m, n)
+
+forwardAD :: forall n m v e. (KnownNat n, KnownNat m, SizedSemiring e)
+          => (forall d. SizedSemiring d => DMap v d -> d '(1, 1))
+          -> DMap v e
+          -> DMap v e
+forwardAD f x = let Dual _ (Sparse' deriv) = f dual in deriv
+    where dual :: DMap v (Dual e (Sparse' v e))
+          dual = DMap.mapWithKey (\v e -> Dual e $ Sparse' $ DMap.singleton v $ fromMat zeroMat) x
+-}
+
+
+
+{-
+reverseAD' :: forall v d n m. (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup), KnownNat n, KnownNat m)
+          => DMap v d
+          -> (forall d'. SizedSemiring d' => DMap v d' -> d' '(1, 1))
+          -> DMap v d
+reverseAD' x f = let Dual _ (Hom rev) = f dualMap
+                     Sparse map = appEndo (rev $ fromMat idMat) mempty
+                  in map
+    where dualMap :: DMap v (Dual d (Hom d (Endo (Sparse v d))))
+          dualMap = DMap.mapWithKey (unsafeCoerce fn) x
+
+          fn :: v '(n, m) -> d '(n, m) -> Dual d (Hom d (Endo (Sparse v d))) '(n, m)
+          fn v e = Dual e $ Hom $ \grad -> Endo $ \(Sparse acc) -> Sparse $ DMap.insertWith plus v grad acc
+-}
+
+{-
+type TopoOrdered :: ((Nat, Nat) -> Type) -> Type
+data TopoOrdered d = TopoOrdered Int d
+
+instance SizedSemiring d => TopoOrdered d where
+    TopoOrdered ord1 lhs `plus`  TopoOrdered ord2 rhs = TopoOrdered (max ord1 ord2 + 1) (lhs `plus` rhs)
+    TopoOrdered ord1 lhs `times` TopoOrdered ord2 rhs = TopoOrdered (max ord1 ord2 + 1) (lhs `plus` rhs)
+    tr (TopoOrdered ord d) = TopoOrdered (ord + 1) (tr d)
+    -- TODO: Is this actually ok to do?
+    fromMat mat = TopoOrdered (-1) mat
+-}
+
+type Opt v d = Hom d (Endo (Sparse v d))
+
+reverseAD' :: forall v d. (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup))
+           => (DMap v (Dual d (Hom d (Sparse v d))) -> Dual d (Hom d (Sparse v d)) '(1, 1))
+           -> DMap v d
+           -> DMap v d
+reverseAD' f x = let Dual _ (Hom rev) = f dualMap
+                     Sparse map = rev $ fromMat idMat
+                  in map
+    where dualMap :: DMap v (Dual d (Hom d (Sparse v d)))
+          dualMap = DMap.mapWithKey (\k v -> Dual v $ Hom $ \grad -> Sparse $ DMap.singleton k grad) x
+
+           -- => (forall d'. SizedSemiring d' => DMap v d' -> d' '(1, 1))
+reverseAD'Endo :: forall v d. (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup))
+               => (DMap v (Dual d (Opt v d)) -> Dual d (Opt v d) '(1, 1))
+               -> DMap v d
+               -> DMap v d
+reverseAD'Endo f x = let Dual _ (Hom rev) = f dualMap
+                         Sparse map = appEndo (rev $ fromMat idMat) mempty
+                  in map
+    where dualMap :: DMap v (Dual d (Opt v d))
+          dualMap = DMap.mapWithKey (\k v ->
+              Dual v $ Hom $ \grad -> Endo $ \(Sparse acc) -> Sparse $ DMap.insertWith (<>) k grad acc)
+              x
+          -- I would really like to use `flip DMap.mapWithKey x $ \(..) -> {- lambda -}`, however
+          -- for some reason it won't compile.
+
+type TopoOrdered :: ((Nat, Nat) -> Type) -> (Nat, Nat) -> Type
+data TopoOrdered d tup = TopoOrdered Int (d tup)
+
+instance SizedSemiring d => SizedSemiring (TopoOrdered d) where
+    TopoOrdered ord1 lhs `plus`  TopoOrdered ord2 rhs = TopoOrdered (max ord1 ord2 + 1) (lhs `plus` rhs)
+    TopoOrdered ord1 lhs `times` TopoOrdered ord2 rhs = TopoOrdered (max ord1 ord2 + 1) (lhs `times` rhs)
+    tr (TopoOrdered ord d) = TopoOrdered (ord + 1) (tr d)
+    -- TODO: Is this actually ok to do?
+    fromMat mat = TopoOrdered 0 (fromMat mat)
+
+type Hom' :: ((Nat, Nat) -> Type) -> Type -> (Nat, Nat) -> Type
+newtype Hom' d e tup = Hom' (d tup -> e)
+
+instance Semigroup e => Semigroup (Hom' d e tup) where
+    Hom' lhs <> Hom' rhs = Hom' $ \grad -> lhs grad <> rhs grad
+
+instance Monoid e => Monoid (Hom' d e tup) where
+    mempty = Hom' $ \_ -> mempty
+
+instance (SizedSemiring d, Monoid e) => SizedModule d (Hom' (TopoOrdered d) e) where
+    vlscale factor (Hom' f) = Hom' $ \grad -> f (TopoOrdered 0 (tr factor) `times` grad)
+    vrscale (Hom' f) factor = Hom' $ \grad -> f (grad `times` TopoOrdered 0 (tr factor))
+    vtr (Hom' f) = Hom' $ \grad -> f (tr grad)
+
+reverseADTopo :: forall v d. (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup))
+              => (DMap v (Dual d (Hom' (TopoOrdered d) (Sparse v d))) -> Dual d (Hom' (TopoOrdered d) (Sparse v d)) '(1, 1))
+              -> DMap v d
+              -> DMap v d
+reverseADTopo f x = let Dual _ (Hom' rev) = f dualMap
+                        Sparse map = rev $ TopoOrdered 0 (fromMat idMat)
+                     in map
+    where dualMap :: DMap v (Dual d (Hom' (TopoOrdered d) (Sparse v d)))
+          dualMap = DMap.mapWithKey (\k v ->
+              Dual v $ Hom' $ let !memo = unsafePerformIO $ newIORef @[(Int, Sparse v d)] []
+
+                                  fn (TopoOrdered i grad) = Sparse $ DMap.singleton k grad
+
+                                  memoized (TopoOrdered i grad) = unsafePerformIO $ do
+                                      list <- readIORef memo
+                                      case lookup i list of
+                                        Just v -> return v
+                                        Nothing -> do let res = fn (TopoOrdered i grad)
+                                                      modifyIORef' memo (\l -> (i, res):l)
+                                                      return res
+                                  {-# NOINLINE memoized #-}
+                               in memoized)
+              x
+
+          getClosureId :: IORef Int -> Int
+          getClosureId ref = unsafePerformIO $ do i <- readIORef ref
+                                                  modifyIORef' ref (+1)
+                                                  return i
+
+type Opt' v d = Hom' (TopoOrdered d) (Endo (Sparse v d))
+
+reverseADTopoEndo :: forall v d. (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup))
+                  => (DMap v (Dual d (Opt' v d)) -> Dual d (Opt' v d) '(1, 1))
+                  -> DMap v d
+                  -> DMap v d
+reverseADTopoEndo f x = let Dual _ (Hom' rev) = f dualMap
+                            Sparse map = appEndo (rev $ TopoOrdered 0 (fromMat idMat)) mempty
+                     in map
+    where dualMap :: DMap v (Dual d (Opt' v d))
+          dualMap = DMap.mapWithKey (\k v ->
+              Dual v $ Hom' $ let !memo = unsafePerformIO $ newIORef @[(Int, Endo (Sparse v d))] []
+
+                                  fn (TopoOrdered i grad) = Endo $
+                                      \(Sparse acc) -> Sparse $ DMap.insertWith (<>) k grad acc
+
+                                  memoized (TopoOrdered i grad) = unsafePerformIO $ do
+                                      list <- readIORef memo
+                                      case lookup i list of
+                                        Just v -> return v
+                                        Nothing -> do let res = fn (TopoOrdered i grad)
+                                                      modifyIORef' memo (\l -> (i, res):l)
+                                                      return res
+                                  {-# NOINLINE memoized #-}
+                               in memoized)
+              x
+
+          getClosureId :: IORef Int -> Int
+          getClosureId ref = unsafePerformIO $ do i <- readIORef ref
+                                                  modifyIORef' ref (+1)
+                                                  return i
+
+{-
+reverseADLens :: forall (u :: ((Nat, Nat) -> Type) -> Type) d. (SizedSemiring d, forall tup. Semigroup (d tup))
+              => (forall e. SizedModule d e => u (Dual d e) -> Dual d e '(1, 1))
+              -> u d
+              -> u d
+reverseADLens f x = let Dual _ (Hom rev) = f dualMap
+                        Sparse map = appEndo (rev $ fromMat idMat) mempty
+                  in map
+    where dualMap :: u (Dual d (Hom d (Endo (u d))))
+          dualMap = DMap.mapWithKey (\k v ->
+              Dual v $ Hom $ \grad -> Endo $ \(Sparse acc) -> Sparse $ DMap.insertWith (<>) k grad acc)
+              x
+          -- I would really like to use `flip DMap.mapWithKey x $ \(..) -> {- lambda -}`, however
+          -- for some reason it won't compile.
+-}

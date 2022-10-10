@@ -3,7 +3,21 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    hackage: hmatrix-backprop-0.1.3.0@sha256:eff786a68b34d44df9bd461c5890d0d876684f34e5fd4b6078a67263d21279f1,2294
+    pantry-tree:
+      size: 455
+      sha256: 30892afe2120ad983d39bbda594a9d18b4d44572ba9d032e271455ba1b00091d
+  original:
+    hackage: hmatrix-backprop-0.1.3.0
+- completed:
+    hackage: vinyl-0.14.3@sha256:08565c5d9ed8a5ba69915bffe8960f048587478155d5915a56d2e93b8ba3466f,4267
+    pantry-tree:
+      size: 2146
+      sha256: 8e6d12a18493a741c736c66d3f19be48ea9e52acdd38e66cfe87bbfd88cdbf7e
+  original:
+    hackage: vinyl-0.14.3
 snapshots:
 - completed:
     size: 619403

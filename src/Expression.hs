@@ -57,10 +57,6 @@ data Arg tup where
 
 deriving instance Show (Arg tup)
 
-instance Combine Arg where
-    combine Arg = (<>)
-    {-# INLINE combine #-}
-
 instance GEq Arg where
     (lhs@Arg) `geq` (rhs@Arg) = do GEQ <- pure $ lhs `gcompare` rhs
                                    return Refl

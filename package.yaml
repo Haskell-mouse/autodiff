@@ -30,6 +30,7 @@ dependencies:
 - hmatrix
 - constraints
 - constraints-extras
+- deepseq
 
 default-extensions:
 - MultiParamTypeClasses
@@ -53,6 +54,8 @@ default-extensions:
 - TemplateHaskell
 - TypeOperators
 - TypeFamilies
+- FlexibleContexts
+- RecordWildCards
 
 ghc-options:
 - -Wall
@@ -90,3 +93,21 @@ tests:
     - -ddump-splices
     dependencies:
     - autodiff
+
+benchmarks:
+  algebraic-benches:
+    main:                Main.hs
+    source-dirs:         bench
+    dependencies:
+      - autodiff
+      - criterion
+      - deepseq
+      - backprop
+      - hmatrix-backprop
+      - microlens
+      - microlens-th
+      - dependent-sum
+    ghc-options:
+      - -O2
+      - -rtsopts
+        #- -with-rtsopts=-N

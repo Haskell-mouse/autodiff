@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.35.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -28,6 +28,7 @@ library
       Expression
       Lib
       Sized
+      Test
       Usage
       Usage2
   other-modules:
@@ -56,12 +57,15 @@ library
       TemplateHaskell
       TypeOperators
       TypeFamilies
+      FlexibleContexts
+      RecordWildCards
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       QuickCheck
     , base >=4.7 && <5
     , constraints
     , constraints-extras
+    , deepseq
     , dependent-map
     , dependent-sum-template
     , ghc-prim
@@ -98,6 +102,8 @@ executable autodiff-exe
       TemplateHaskell
       TypeOperators
       TypeFamilies
+      FlexibleContexts
+      RecordWildCards
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck
@@ -105,6 +111,7 @@ executable autodiff-exe
     , base >=4.7 && <5
     , constraints
     , constraints-extras
+    , deepseq
     , dependent-map
     , dependent-sum-template
     , ghc-prim
@@ -142,6 +149,8 @@ test-suite autodiff-test
       TemplateHaskell
       TypeOperators
       TypeFamilies
+      FlexibleContexts
+      RecordWildCards
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -ddump-splices
   build-depends:
       QuickCheck
@@ -149,10 +158,64 @@ test-suite autodiff-test
     , base >=4.7 && <5
     , constraints
     , constraints-extras
+    , deepseq
     , dependent-map
     , dependent-sum-template
     , ghc-prim
     , hmatrix
+    , some
+    , template-haskell
+  default-language: Haskell2010
+
+benchmark algebraic-benches
+  type: exitcode-stdio-1.0
+  main-is: Main.hs
+  other-modules:
+      Paths_autodiff
+  hs-source-dirs:
+      bench
+  default-extensions:
+      MultiParamTypeClasses
+      FunctionalDependencies
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      PolyKinds
+      StandaloneDeriving
+      DeriveFunctor
+      DeriveGeneric
+      DerivingVia
+      UndecidableInstances
+      ScopedTypeVariables
+      DataKinds
+      KindSignatures
+      StandaloneKindSignatures
+      TypeApplications
+      GADTs
+      QuantifiedConstraints
+      RankNTypes
+      TemplateHaskell
+      TypeOperators
+      TypeFamilies
+      FlexibleContexts
+      RecordWildCards
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -O2 -rtsopts
+  build-depends:
+      QuickCheck
+    , autodiff
+    , backprop
+    , base >=4.7 && <5
+    , constraints
+    , constraints-extras
+    , criterion
+    , deepseq
+    , dependent-map
+    , dependent-sum
+    , dependent-sum-template
+    , ghc-prim
+    , hmatrix
+    , hmatrix-backprop
+    , microlens
+    , microlens-th
     , some
     , template-haskell
   default-language: Haskell2010
