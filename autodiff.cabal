@@ -28,7 +28,7 @@ library
       Expression
       Lib
       Sized
-      Test
+      Sized.Staged
       Usage
       Usage2
   other-modules:
@@ -72,6 +72,7 @@ library
     , hmatrix
     , some
     , template-haskell
+    , th-compat
   default-language: Haskell2010
 
 executable autodiff-exe
@@ -118,6 +119,7 @@ executable autodiff-exe
     , hmatrix
     , some
     , template-haskell
+    , th-compat
   default-language: Haskell2010
 
 test-suite autodiff-test
@@ -165,12 +167,14 @@ test-suite autodiff-test
     , hmatrix
     , some
     , template-haskell
+    , th-compat
   default-language: Haskell2010
 
 benchmark algebraic-benches
   type: exitcode-stdio-1.0
   main-is: Main.hs
   other-modules:
+      Env
       Paths_autodiff
   hs-source-dirs:
       bench
@@ -218,4 +222,5 @@ benchmark algebraic-benches
     , microlens-th
     , some
     , template-haskell
+    , th-compat
   default-language: Haskell2010

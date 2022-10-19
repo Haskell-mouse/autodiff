@@ -8,6 +8,11 @@ module Sized ( SizedSemiring(..)
              , zeroMat
              , oneMat
 
+             , Hom (Hom)
+             , Sparse (Sparse)
+             , Dual (Dual)
+             , eval
+
              -- Testing
              , reverseAD'
              , reverseAD'Endo
