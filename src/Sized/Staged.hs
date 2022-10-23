@@ -1,23 +1,20 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE DeriveLift #-}
-{-# LANGUAGE InstanceSigs #-}
-{-# OPTIONS_GHC -Wno-orphans #-}
 
-module Sized.Staged where
+module Sized.Staged (module Sized.Staged) where
 
 -- TODO: Add export list
 
 import GHC.TypeLits
 import Data.Kind
 import Language.Haskell.TH.Syntax.Compat
-import Language.Haskell.TH.Syntax (Lift (liftTyped, lift), runQ)
 import Data.GADT.Compare (GCompare)
 import Data.Dependent.Map (DMap)
 import qualified Data.Dependent.Map as DMap
-import qualified Numeric.LinearAlgebra.Static as LinAlg
 import Sized
 import Data.Semigroup (Endo)
 import Data.Monoid (Endo(..))
+import Sized.LiftInstances ()
 
 -- | Constrained splice.
 -- 
@@ -25,13 +22,6 @@ import Data.Monoid (Endo(..))
 -- Used to implement splicing for indexed matrices.
 type CSpliceQ :: (constr -> Type) -> constr -> Type
 newtype CSpliceQ typ constr = CSpliceQ { splice :: SpliceQ (typ constr) }
-
--- TODO: Test to see if it works
-instance (KnownNat n, KnownNat m) => Lift (LinAlg.L n m) where
-  liftTyped x = unsafeCodeCoerce (lift x)
-  lift x = [| x |]
-
-deriving instance Lift (Mat d)
 
 instance SizedSemiring a => SizedSemiring (CSpliceQ a) where
   (CSpliceQ e1) `plus` (CSpliceQ e2) = CSpliceQ [|| $$e1 `plus` $$e2 ||]
@@ -90,3 +80,10 @@ reverseADEndoStaged env expr =
       [|| Dual
             $$(splice (env v))
             (Hom $ \grad -> Endo $ \(Sparse acc) -> Sparse $ DMap.insertWith plus $$(splice v) grad acc) ||]
+
+type AutoDiffStagedType =
+  forall v d.
+  (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup)) =>
+  (forall n' m'. CSpliceQ v '(n', m') -> CSpliceQ d '(n', m')) ->
+  Expr (CSpliceQ v) '(1, 1) ->
+  SpliceQ (DMap v d)

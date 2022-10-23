@@ -28,6 +28,7 @@ library
       Expression
       Lib
       Sized
+      Sized.LiftInstances
       Sized.Staged
       Usage
       Usage2
@@ -175,6 +176,7 @@ benchmark algebraic-benches
   main-is: Main.hs
   other-modules:
       Env
+      StagedTests
       Paths_autodiff
   hs-source-dirs:
       bench

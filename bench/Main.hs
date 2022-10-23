@@ -17,14 +17,21 @@ import Data.Maybe (fromMaybe)
 
 import Sized
 import Env
+import StagedTests
 import Data.GADT.Compare (GCompare)
 import Data.GADT.Compare.TH (deriveGEq, deriveGCompare)
 import Data.Kind
 import Data.Dependent.Sum (DSum(..))
 import Data.Dependent.Map (DMap, (!))
 import qualified Data.Dependent.Map as DMap
-import Sized.Staged (reverseADStaged)
+import Sized.Staged (reverseADStaged, CSpliceQ (splice))
 import GHC.IO (unsafePerformIO)
+import Language.Haskell.TH (runIO)
+import Language.Haskell.TH.Syntax.Compat (liftCode, examineCode)
+
+-- code = liftCode $ do
+--   x <- runIO setupSizedNetStaged
+--   examineCode (splice x)
 
 main :: IO ()
 main = defaultMain [
@@ -53,8 +60,11 @@ main = defaultMain [
                   bench "ours"        $ nf (netFromMap . reverseAD (`var2Getter` net)) (exprSizedTest input)
        --     HERE BE DRAGONS
        --     ,  env setupSizedEnvStaged $ \ ~(net, input) ->
-       --            bench "ours +th"    $ nf netFromMap $$(reverseADStaged (`var2GetterStaged` $$net) (exprSizedTest $$input))
-       --     ,  bench "ours +th"       $ nf (netFromMap) $$(reverseADStaged (`var2GetterStaged` CSpliceQ [||fst (unsafePerformIO setupSizedEnv)||]) (exprSizedTest (CSpliceQ [||snd (unsafePerformIO setupSizedEnv)||])))
+       --            bench "ours +th"    $ nf netFromMap ($$(reverseADStaged (`var2GetterStaged` net) (exprSizedTestStaged input)))
+       --     ,  bench "ours +th"        $ nfIO $ (testAdIO reverseADStaged setupSizedNetStaged setupSizedInput)
+       --     ,  bench "ours +th"        $ nfIO $$setupSizedEnvStaged
+       --        `fmap` (\(net, input) -> netFromMap ($$(reverseADStaged (`var2GetterStaged` net)) (exprSizedTest $$input)))
+       --     ,  bench "ours + th"       $ nfIO $ netFromMap <$> $$(testAdIO reverseADStaged setupSizedNet setupSizedInput)
            ,  env setupSizedEnv       $ \ ~(net, input) ->
                   bench "ours +endo"  $ nf (netFromMap . reverseADEndo (flip var2Getter net)) (exprSizedTest input)
            ,  env setupSizedEnv       $ \ ~(net, input) ->

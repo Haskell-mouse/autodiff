@@ -1,29 +1,29 @@
 {-# LANGUAGE DeriveLift #-}
-{-# LANGUAGE DeriveTraversable #-}
+
 module Env (module Env) where
 
 import Prelude hiding (sum)
 import GHC.Generics (Generic)
-import GHC.TypeLits
+import GHC.TypeLits (KnownNat, Nat, natVal)
 import qualified Numeric.LinearAlgebra.Static as LinAlg
 import Numeric.LinearAlgebra.Static.Backprop
 import Numeric.Backprop
-import Lens.Micro.TH
+import Lens.Micro.TH (makeLenses)
 import Control.DeepSeq (NFData)
-import Data.Proxy
-import Test.QuickCheck
+import Data.Proxy (Proxy(Proxy))
+import Test.QuickCheck (generate, Arbitrary(arbitrary))
 import Data.List (unfoldr)
 import Data.Maybe (fromMaybe)
-
-import Sized
 import Data.GADT.Compare (GCompare)
 import Data.GADT.Compare.TH (deriveGEq, deriveGCompare)
-import Data.Kind
+import Data.Kind (Type)
 import Data.Dependent.Sum (DSum(..))
 import Data.Dependent.Map (DMap, (!))
 import qualified Data.Dependent.Map as DMap
-import Sized.Staged (CSpliceQ (CSpliceQ, splice))
 import Language.Haskell.TH.Syntax (Lift)
+import Sized
+import Sized.Staged
+import Sized.LiftInstances ()
 
 randomL :: forall n m. (KnownNat n, KnownNat m) => IO (L n m)
 randomL = do let n = natVal (Proxy @n)
@@ -130,6 +130,17 @@ exprSizedNet = SizedNet { szWeights1 = Var SzWeights1
                         , szBias4    = Var SzBias4
                         }
 
+exprSizedNetStaged :: SizedNet (Expr (CSpliceQ SizedNetVar))
+exprSizedNetStaged = SizedNet { szWeights1 = Var (CSpliceQ [||SzWeights1||])
+                              , szBias1    = Var (CSpliceQ [||SzBias1||])
+                              , szWeights2 = Var (CSpliceQ [||SzWeights2||])
+                              , szBias2    = Var (CSpliceQ [||SzBias2||])
+                              , szWeights3 = Var (CSpliceQ [||SzWeights3||])
+                              , szBias3    = Var (CSpliceQ [||SzBias3||])
+                              , szWeights4 = Var (CSpliceQ [||SzWeights4||])
+                              , szBias4    = Var (CSpliceQ [||SzBias4||])
+                              }
+
 sizedTest :: SizedSemiring d => SizedNet d -> d '(784, 1) -> d '(1, 1)
 sizedTest SizedNet{..} input = fromMat oneMat `times` layer4Out
     where layer4Out = szWeights4 `times` layer3Out `plus` szBias4
@@ -168,8 +179,8 @@ sizedDMapTripTest dmap input = let res = fromMat oneMat `times` layer4Out in res
 exprSizedTest :: Mat '(784, 1) -> Expr SizedNetVar '(1, 1)
 exprSizedTest input = sizedTest exprSizedNet (fromMat input)
 
--- exprSizedTestStaged :: CSpliceQ Mat '(784, 1) -> Expr (CSpliceQ SizedNetVar) '(1, 1)
--- exprSizedTestStaged input = sizedTest exprSizedNet (fromMat input)
+exprSizedTestStaged :: Mat '(784, 1) -> Expr (CSpliceQ SizedNetVar) '(1, 1)
+exprSizedTestStaged input = sizedTest exprSizedNetStaged (fromMat input)
 
 exprSizedDupTest :: Mat '(784, 1) -> Expr SizedNetVar '(1, 1)
 exprSizedDupTest input = sizedDupTest exprSizedNet (fromMat input)
@@ -196,11 +207,39 @@ setupSizedEnv = do w1 <- randomL
                           , Mat input
                           )
 
-setupSizedEnvStaged :: IO (CSpliceQ SizedNet Mat, CSpliceQ Mat '(784, 1))
-setupSizedEnvStaged = fmap (\(x, y) -> (CSpliceQ [||x||], CSpliceQ [||y||])) setupSizedEnv
+setupSizedNet :: IO (SizedNet Mat)
+setupSizedNet = do w1 <- randomL
+                   b1 <- randomL
+                   w2 <- randomL
+                   b2 <- randomL
+                   w3 <- randomL
+                   b3 <- randomL
+                   w4 <- randomL
+                   b4 <- randomL
+                   return SizedNet { szWeights1 = Mat w1
+                                   , szBias1    = Mat b1
+                                   , szWeights2 = Mat w2
+                                   , szBias2    = Mat b2
+                                   , szWeights3 = Mat w3
+                                   , szBias3    = Mat b3
+                                   , szWeights4 = Mat w4
+                                   , szBias4    = Mat b4
+                                   }
 
--- fstS :: (SpliceQ a, SpliceQ b) -> SpliceQ a
--- fstS tup = [|| fst $$tup ||]
+setupSizedNetStaged :: IO (CSpliceQ SizedNet Mat)
+setupSizedNetStaged = fmap (\x -> CSpliceQ [||x||]) setupSizedNet
+
+setupSizedInput :: IO (Mat '(784, 1))
+setupSizedInput = Mat <$> randomL
+
+setupSizedInputStaged :: IO (CSpliceQ Mat '(784, 1))
+setupSizedInputStaged = fmap (\x -> CSpliceQ [||x||]) setupSizedInput
+
+-- setupSizedEnvStaged :: SpliceQ (IO (SizedNet Mat, Mat '(784, 1)))
+-- setupSizedEnvStaged = [|| setupSizedEnv ||]
+
+-- setupSizedEnvStaged :: IO (CSpliceQ SizedNet Mat, CSpliceQ Mat '(784, 1))
+-- setupSizedEnvStaged = fmap (\(x, y) -> (CSpliceQ [||x||], CSpliceQ [||y||])) setupSizedEnv
 
 var2Getter :: SizedNetVar '(n, m) -> SizedNet d -> d '(n, m)
 var2Getter SzWeights1 = szWeights1
@@ -212,8 +251,13 @@ var2Getter SzBias3    = szBias3
 var2Getter SzWeights4 = szWeights4
 var2Getter SzBias4    = szBias4
 
-var2GetterStaged :: CSpliceQ SizedNetVar '(n, m) -> CSpliceQ SizedNet d -> CSpliceQ d '(n, m)
-var2GetterStaged e net = CSpliceQ [|| var2Getter $$(splice e) $$(splice net) ||]
+var2GetterStaged ::
+    (forall n' m'. (KnownNat n', KnownNat m') => Lift (d '(n', m'))) =>
+    CSpliceQ SizedNetVar '(n, m) -> SizedNet d -> CSpliceQ d '(n, m)
+var2GetterStaged var net = CSpliceQ [|| var2Getter $$(splice var) net ||]
+
+-- var2GetterStaged :: CSpliceQ SizedNetVar '(n, m) -> CSpliceQ SizedNet d -> CSpliceQ d '(n, m)
+-- var2GetterStaged e net = CSpliceQ [|| var2Getter $$(splice e) $$(splice net) ||]
 
 lookupGrad :: forall v n m. (GCompare v, KnownNat n, KnownNat m) => DMap v Mat -> v '(n, m) -> Mat '(n, m)
 lookupGrad grads v = fromMaybe zeroMat (DMap.lookup v grads)
