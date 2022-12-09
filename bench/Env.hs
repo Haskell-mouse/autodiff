@@ -226,20 +226,8 @@ setupSizedNet = do w1 <- randomL
                                    , szBias4    = Mat b4
                                    }
 
-setupSizedNetStaged :: IO (CSpliceQ SizedNet Mat)
-setupSizedNetStaged = fmap (\x -> CSpliceQ [||x||]) setupSizedNet
-
 setupSizedInput :: IO (Mat '(784, 1))
 setupSizedInput = Mat <$> randomL
-
-setupSizedInputStaged :: IO (CSpliceQ Mat '(784, 1))
-setupSizedInputStaged = fmap (\x -> CSpliceQ [||x||]) setupSizedInput
-
--- setupSizedEnvStaged :: SpliceQ (IO (SizedNet Mat, Mat '(784, 1)))
--- setupSizedEnvStaged = [|| setupSizedEnv ||]
-
--- setupSizedEnvStaged :: IO (CSpliceQ SizedNet Mat, CSpliceQ Mat '(784, 1))
--- setupSizedEnvStaged = fmap (\(x, y) -> (CSpliceQ [||x||], CSpliceQ [||y||])) setupSizedEnv
 
 var2Getter :: SizedNetVar '(n, m) -> SizedNet d -> d '(n, m)
 var2Getter SzWeights1 = szWeights1
@@ -255,9 +243,6 @@ var2GetterStaged ::
     (forall n' m'. (KnownNat n', KnownNat m') => Lift (d '(n', m'))) =>
     CSpliceQ SizedNetVar '(n, m) -> SizedNet d -> CSpliceQ d '(n, m)
 var2GetterStaged var net = CSpliceQ [|| var2Getter $$(splice var) net ||]
-
--- var2GetterStaged :: CSpliceQ SizedNetVar '(n, m) -> CSpliceQ SizedNet d -> CSpliceQ d '(n, m)
--- var2GetterStaged e net = CSpliceQ [|| var2Getter $$(splice e) $$(splice net) ||]
 
 lookupGrad :: forall v n m. (GCompare v, KnownNat n, KnownNat m) => DMap v Mat -> v '(n, m) -> Mat '(n, m)
 lookupGrad grads v = fromMaybe zeroMat (DMap.lookup v grads)

@@ -29,6 +29,8 @@ instance SizedSemiring a => SizedSemiring (CSpliceQ a) where
   tr (CSpliceQ e1) = CSpliceQ [|| tr $$e1 ||]
   fromMat mat = CSpliceQ [|| fromMat mat ||]
 
+-- TODO: Debug.Trace the `fromMat` function
+
 -- TODO: Test if this instance improves performance
 -- instance SizedSemiring (CSpliceQ Mat) where
 --   (CSpliceQ e1) `plus` (CSpliceQ e2) = CSpliceQ
