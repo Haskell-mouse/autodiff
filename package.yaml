@@ -80,8 +80,14 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -fprint-potential-instances
+    - -dth-dec-file
     dependencies:
     - autodiff
+    - dependent-sum
+    - backprop
+    - microlens-th
+    - hmatrix-backprop
 
 tests:
   autodiff-test:
@@ -92,6 +98,7 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     - -ddump-splices
+    - -ddump-to-file
     dependencies:
     - autodiff
 
@@ -111,4 +118,6 @@ benchmarks:
     ghc-options:
       - -O2
       - -rtsopts
+      - -ddump-splices
+      - -ddump-to-file
         #- -with-rtsopts=-N

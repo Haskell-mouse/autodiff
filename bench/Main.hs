@@ -34,8 +34,8 @@ main = defaultMain [
                   bench "backprop"         $ nf (gradBP (flip backpropTest (auto input))) net
            ,  env setupSizedEnv            $ \ ~(net, input) ->
                   bench "ours"             $ nf (netFromMap . reverseAD (`var2Getter` net)) (exprSizedTest input)
-           , env setupSizedNet             $ \ net ->
-                  bench "ours + th"        $ nf (netFromMap . $$(testAdStaged reverseADStaged)) net
+--           , env setupSizedNet             $ \ net ->
+--                  bench "ours + th"        $ nf (netFromMap . $$(testAdStaged reverseADStaged)) net
            ,  env setupSizedEnv            $ \ ~(net, input) ->
                   bench "ours +endo"       $ nf (netFromMap . reverseADEndo (flip var2Getter net)) (exprSizedTest input)
            , env setupSizedNet             $ \ net ->

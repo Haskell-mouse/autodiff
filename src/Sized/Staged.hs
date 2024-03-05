@@ -15,7 +15,14 @@ import Sized
 import Data.Semigroup (Endo)
 import Data.Monoid (Endo(..))
 import Sized.LiftInstances ()
+import qualified Numeric.LinearAlgebra.Static as LinAlg
+import qualified Numeric.LinearAlgebra as LinAlg (Additive(..))
 
+import Data.Functor.Identity
+import qualified Language.Haskell.TH as TH
+import qualified Language.Haskell.TH.Syntax as TH
+
+import Unsafe.Coerce
 -- | Constrained splice.
 -- 
 -- Wraps a SpliceQ into a type constructor.
@@ -23,31 +30,64 @@ import Sized.LiftInstances ()
 type CSpliceQ :: (constr -> Type) -> constr -> Type
 newtype CSpliceQ typ constr = CSpliceQ { splice :: SpliceQ (typ constr) }
 
-instance SizedSemiring a => SizedSemiring (CSpliceQ a) where
-  (CSpliceQ e1) `plus` (CSpliceQ e2) = CSpliceQ [|| $$e1 `plus` $$e2 ||]
-  (CSpliceQ e1) `times` (CSpliceQ e2) = CSpliceQ [|| $$e1 `times` $$e2 ||]
-  tr (CSpliceQ e1) = CSpliceQ [|| tr $$e1 ||]
-  fromMat mat = CSpliceQ [|| fromMat mat ||]
+--instance SizedSemiring a => SizedSemiring (CSpliceQ a) where
+--  (CSpliceQ e1) `plus` (CSpliceQ e2) = CSpliceQ [|| $$e1 `plus` $$e2 ||]
+--  (CSpliceQ e1) `times` (CSpliceQ e2) = CSpliceQ [|| $$e1 `times` $$e2 ||]
+--  tr (CSpliceQ e1) = CSpliceQ [|| tr $$e1 ||]
+--  fromMat mat = CSpliceQ [|| fromMat mat ||]
 
 -- TODO: Debug.Trace the `fromMat` function
 
 -- TODO: Test if this instance improves performance
--- instance SizedSemiring (CSpliceQ Mat) where
---   (CSpliceQ e1) `plus` (CSpliceQ e2) = CSpliceQ
---     [|| let (Mat lhs) = $$e1
---             (Mat rhs) = $$e2
---          in Mat $ lhs `LinAlg.add` rhs ||]
---   (CSpliceQ e1) `times` (CSpliceQ e2) = CSpliceQ
---     [|| let (Mat lhs) = $$e1
---             (Mat rhs) = $$e2
---          in Mat $ (LinAlg.<>) lhs rhs ||]
---   tr (CSpliceQ e1) = CSpliceQ
---     [|| let (Mat mat) = $$e1 in Mat $ LinAlg.tr mat ||]
---   fromMat x = CSpliceQ [|| error "TODO" ||]
+instance SizedSemiring (CSpliceQ Mat) where
+  (CSpliceQ e1) `plus` (CSpliceQ e2) = CSpliceQ
+    [|| let (Mat lhs) = $$e1
+            (Mat rhs) = $$e2
+        in Mat $ lhs `LinAlg.add` rhs ||]
+  (CSpliceQ e1) `times` (CSpliceQ e2) = CSpliceQ
+    [|| let (Mat lhs) = $$e1
+            (Mat rhs) = $$e2
+        in Mat $ (LinAlg.<>) lhs rhs ||]
+  tr (CSpliceQ e1) = CSpliceQ
+     [|| let (Mat mat) = $$e1 in Mat $ LinAlg.tr mat ||]
+  fromMat mat = CSpliceQ [|| id mat ||]
 
+-- Inlined by hands functions from other instances
+instance (GCompare k) => SizedSemiring (CSpliceQ (Dual Mat (Hom Mat (Endo (Sparse k Mat))))) where 
+  (CSpliceQ e1) `plus` (CSpliceQ e2) = CSpliceQ [||
+      let Dual (Mat matL) (Hom df1) = $$e1
+          Dual (Mat matR) (Hom df2) = $$e2
+      in Dual (Mat $ (LinAlg.add) matL matR) (Hom $ \grad -> (df1 grad) <> (df2 grad)) ||]
+
+  (CSpliceQ e1) `times` (CSpliceQ e2) = CSpliceQ [||
+      let Dual (Mat matL) (Hom df1) = $$e1
+          Dual (Mat matR) (Hom df2) = $$e2
+      in Dual (Mat $ (LinAlg.mul) matL matR) 
+                 ((Hom $ \(Mat grad) -> df2 $ (Mat $ (LinAlg.tr matL) `LinAlg.mul` grad)) <> 
+                  (Hom $ \(Mat grad) -> df1 $ (Mat $ grad `LinAlg.mul` (LinAlg.tr matR)))) ||]
+
+  tr (CSpliceQ e1) = CSpliceQ [||
+    let Dual (Mat mat) (Hom f) = $$e1
+    in Dual (Mat $ LinAlg.tr mat) (Hom $ \(Mat grad) -> f (Mat (LinAlg.tr grad))) ||]
+  fromMat mat = CSpliceQ [|| Dual mat mempty ||]
+
+-- TODO: Try to use TH to use "SizedSemiring (CSpliceQ Mat)" instance 
+{-
+
+instance (GCompare k) => SizedSemiring (CSpliceQ (Dual Mat (Hom Mat (Endo (Sparse k Mat))))) where 
+  fromMat mat = CSpliceQ [|| Dual mat mempty ||]
+  tr (CSpliceQ e1) = CSpliceQ $ do
+    (TH.TExp a) <- TH.examineCode [|| e1 ||]
+    unsafeCoerce $ e1
+  plus = undefined 
+  times = undefined 
+
+-}
+   
 reverseADStaged ::
   forall v d.
-  (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup)) =>
+  (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup), SizedSemiring
+                          (CSpliceQ (Dual d (Hom d (Sparse v d)))) ) =>
   (forall n' m'. CSpliceQ v '(n', m') -> CSpliceQ d '(n', m')) ->
   Expr (CSpliceQ v) '(1, 1) ->
   SpliceQ (DMap v d)
@@ -64,7 +104,8 @@ reverseADStaged env expr =
 
 reverseADEndoStaged ::
   forall v d.
-  (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup)) =>
+  (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup), SizedSemiring
+                          (CSpliceQ (Dual d (Hom d (Endo (Sparse v d)))))) =>
   (forall n' m'. CSpliceQ v '(n', m') -> CSpliceQ d '(n', m')) ->
   Expr (CSpliceQ v) '(1, 1) ->
   SpliceQ (DMap v d)
@@ -81,11 +122,25 @@ reverseADEndoStaged env expr =
     env' v = CSpliceQ
       [|| Dual
             $$(splice (env v))
-            (Hom $ \grad -> Endo $ \(Sparse acc) -> Sparse $ DMap.insertWith plus $$(splice v) grad acc) ||]
+            (Hom $ \grad -> Endo $ \(Sparse acc) -> Sparse $ DMap.insertWith plus $$(splice v) grad acc) ||] 
+{-
+reverseADEndo :: forall v d. (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup))
+              => (forall n' m'. v '(n', m') -> d '(n', m'))
+              -> Expr v '(1, 1)
+              -> DMap v d
+reverseADEndo env expr = let Dual _ (Hom rev) = eval env' expr
+                             Sparse map = appEndo (rev $ fromMat idMat) mempty
+                          in map
+    where env' :: forall n' m'. (KnownNat n', KnownNat m')
+               => v '(n', m')
+               -> Dual d (Hom d (Endo (Sparse v d))) '(n', m')
+          env' v = Dual (env v) (Hom $ \grad -> Endo $ \(Sparse acc) -> Sparse $ DMap.insertWith plus v grad acc)
+-}
 
 type AutoDiffStagedType =
   forall v d.
-  (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup)) =>
+  (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup), SizedSemiring
+                          (CSpliceQ (Dual d (Hom d (Endo (Sparse v d)))))) =>
   (forall n' m'. CSpliceQ v '(n', m') -> CSpliceQ d '(n', m')) ->
   Expr (CSpliceQ v) '(1, 1) ->
-  SpliceQ (DMap v d)
+  SpliceQ (DMap v d)  

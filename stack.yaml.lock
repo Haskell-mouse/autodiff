@@ -5,23 +5,51 @@
 
 packages:
 - completed:
+    hackage: backprop-0.2.6.5@sha256:b7edc0db9f9dffa38b718e6ebc205eb4d91cb38d51e26f3272dca8ee92eb6bca,2965
+    pantry-tree:
+      sha256: aa29be2cf83383714cda53ae6cfc084590c1fbb7c93b2f41af17ae3cf90ad1a3
+      size: 2123
+  original:
+    hackage: backprop-0.2.6.5
+- completed:
     hackage: hmatrix-backprop-0.1.3.0@sha256:eff786a68b34d44df9bd461c5890d0d876684f34e5fd4b6078a67263d21279f1,2294
     pantry-tree:
-      size: 455
       sha256: 30892afe2120ad983d39bbda594a9d18b4d44572ba9d032e271455ba1b00091d
+      size: 455
   original:
     hackage: hmatrix-backprop-0.1.3.0
 - completed:
     hackage: vinyl-0.14.3@sha256:08565c5d9ed8a5ba69915bffe8960f048587478155d5915a56d2e93b8ba3466f,4267
     pantry-tree:
-      size: 2146
       sha256: 8e6d12a18493a741c736c66d3f19be48ea9e52acdd38e66cfe87bbfd88cdbf7e
+      size: 2146
   original:
     hackage: vinyl-0.14.3
+- completed:
+    hackage: dependent-sum-template-0.2.0.1@sha256:7db6dbea8028db05de2be778299e76595f887deece7a0fa27a4861af2db1b7f7,2093
+    pantry-tree:
+      sha256: 588a8d9a0344a75e5ec90f4fc13e783be4b3f6a8eba1faf633979ca2657567c3
+      size: 548
+  original:
+    hackage: dependent-sum-template-0.2.0.1
+- completed:
+    hackage: constraints-extras-0.3.2.1@sha256:908ec0a3ff770816a2c3f9704b93e2991892e29b14c0e0db732ba928a951b0ea,1857
+    pantry-tree:
+      sha256: 0f3119d86dbe904384299e878b3aac054d612cb88027c3d70f35280281499077
+      size: 595
+  original:
+    hackage: constraints-extras-0.3.2.1
+- completed:
+    hackage: hmatrix-vector-sized-0.1.3.0@sha256:033d957faaae94024aeffb860329290cd0ad65e79e551ff847bf6e26cc4c9709,1881
+    pantry-tree:
+      sha256: 8e9403c36a40011663b9b3e997d985ad6a8e1e55536ef97541c512776b6aa3c7
+      size: 403
+  original:
+    hackage: hmatrix-vector-sized-0.1.3.0
 snapshots:
 - completed:
-    size: 619403
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/25.yaml
-    sha256: 1ecad1f0bd2c27de88dbff6572446cfdf647c615d58a7e2e2085c6b7dfc04176
+    sha256: a81fb3877c4f9031e1325eb3935122e608d80715dc16b586eb11ddbff8671ecd
+    size: 640086
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/21/25.yaml
   original:
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/25.yaml
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/21/25.yaml

@@ -19,6 +19,7 @@ module Sized ( SizedSemiring(..)
              , Var(..)
              , reverseADTopo
              , reverseADTopoEndo
+             , SizedModule(..)
              ) where
 
 import GHC.TypeLits

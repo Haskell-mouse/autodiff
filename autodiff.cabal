@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.35.0.
+-- This file has been generated from package.yaml by hpack version 0.36.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -79,6 +79,8 @@ library
 executable autodiff-exe
   main-is: Main.hs
   other-modules:
+      Env
+      StagedTests
       Paths_autodiff
   hs-source-dirs:
       app
@@ -106,18 +108,22 @@ executable autodiff-exe
       TypeFamilies
       FlexibleContexts
       RecordWildCards
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -fprint-potential-instances -dth-dec-file
   build-depends:
       QuickCheck
     , autodiff
+    , backprop
     , base >=4.7 && <5
     , constraints
     , constraints-extras
     , deepseq
     , dependent-map
+    , dependent-sum
     , dependent-sum-template
     , ghc-prim
     , hmatrix
+    , hmatrix-backprop
+    , microlens-th
     , some
     , template-haskell
     , th-compat
@@ -154,7 +160,7 @@ test-suite autodiff-test
       TypeFamilies
       FlexibleContexts
       RecordWildCards
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -ddump-splices
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -ddump-splices -ddump-to-file
   build-depends:
       QuickCheck
     , autodiff
@@ -204,7 +210,7 @@ benchmark algebraic-benches
       TypeFamilies
       FlexibleContexts
       RecordWildCards
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -O2 -rtsopts
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -O2 -rtsopts -ddump-splices -ddump-to-file
   build-depends:
       QuickCheck
     , autodiff

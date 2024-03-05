@@ -1,3 +1,5 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
+
 module StagedTests (testAdStaged) where
 
 import Data.Dependent.Map (DMap)
@@ -10,7 +12,7 @@ import Env
   )
 import Language.Haskell.TH (runIO)
 import Language.Haskell.TH.Syntax.Compat (Code (examineCode), SpliceQ, liftCode)
-import Sized (SizedSemiring, Dual, Hom, Sparse)
+import Sized 
 import Sized.LiftInstances ()
 import Sized.Staged
   ( AutoDiffStagedType,
