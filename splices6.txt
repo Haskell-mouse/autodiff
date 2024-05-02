@@ -1,0 +1,510 @@
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights4 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights4 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights4 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights4 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Sized.Mat (Internal.Static.fromList [1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0])) GHC.Base.mempty
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights4 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights4 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights4 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights4 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Sized.Mat (Internal.Static.fromList [1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0])) GHC.Base.mempty
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights4 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights4 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights4 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights4 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Sized.Mat (Internal.Static.fromList [1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0])) GHC.Base.mempty
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights4 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights4 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights4 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights4 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Sized.Mat (Internal.Static.fromList [1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0])) GHC.Base.mempty
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights4 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights4 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights1 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights1 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights2 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights2 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights3 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights3 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Env.SzWeights4 `Env.var2Getter` net_0) (Sized.Hom GHC.Base.$ (\grad_1 -> Data.Semigroup.Internal.Endo GHC.Base.$ (\(Sized.Sparse acc_2) -> Sized.Sparse GHC.Base.$ Data.Dependent.Map.insertWith Sized.plus Env.SzWeights4 grad_1 acc_2)))
+pp3
+
+Sized.Dual (Sized.Mat (Internal.Static.fromList [1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0,
+                                                 1.0])) GHC.Base.mempty
+pp3
+

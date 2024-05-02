@@ -72,8 +72,7 @@ ghc-options:
   "$targets": -ddump-splices -ddump-to-file
 
 nix:
-# Enable if nixos is used. 
-  enable: false 
+  enable: true
   packages:
   - blas.dev
   - blas.out

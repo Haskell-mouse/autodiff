@@ -1,0 +1,58 @@
+/home/rinat/autodiff/autodiff-exp/src/Sized.hs:227:1-15: Splicing declarations
+    deriveGEq ''Var
+  ======>
+    instance GEq Var where
+      geq X X = do return Refl
+      geq Y Y = do return Refl
+      geq _ _ = Nothing
+/home/rinat/autodiff/autodiff-exp/src/Sized.hs:228:1-20: Splicing declarations
+    deriveGCompare ''Var
+  ======>
+    instance GCompare Var where
+      some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.gcompare X X
+        = dependent-sum-template-0.2.0.1-FaRjry2tERcAGCMm5Czxie:Data.GADT.Compare.Monad.runGComparing
+            (do return
+                  some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.GEQ)
+      some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.gcompare
+        X {}
+        _
+        = some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.GLT
+      some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.gcompare
+        _
+        X {}
+        = some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.GGT
+      some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.gcompare Y Y
+        = dependent-sum-template-0.2.0.1-FaRjry2tERcAGCMm5Czxie:Data.GADT.Compare.Monad.runGComparing
+            (do return
+                  some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.GEQ)
+      some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.gcompare
+        Y {}
+        _
+        = some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.GLT
+      some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.gcompare
+        _
+        Y {}
+        = some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.GGT
+/home/rinat/autodiff/autodiff-exp/src/Sized.hs:229:1-17: Splicing declarations
+    deriveGShow ''Var
+  ======>
+    instance some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.GShow Var where
+      some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.gshowsPrec
+        _
+        X
+        = showString "X"
+      some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.gshowsPrec
+        _
+        Y
+        = showString "Y"
+/home/rinat/autodiff/autodiff-exp/src/Sized.hs:230:1-19: Splicing declarations
+    deriveArgDict ''Var
+  ======>
+    instance Data.Constraint.Extras.ArgDict c_a9dg Var where
+      type Data.Constraint.Extras.ConstraintsFor Var c_a9dg = (c_a9dg '(4,
+                                                                        3),
+                                                               c_a9dg '(3, 2))
+      Data.Constraint.Extras.argDict
+        = \case
+            X {} -> Data.Constraint.Dict
+            Y {} -> Data.Constraint.Dict

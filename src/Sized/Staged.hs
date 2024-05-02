@@ -22,6 +22,8 @@ import Data.Functor.Identity
 import qualified Language.Haskell.TH as TH
 import qualified Language.Haskell.TH.Syntax as TH
 
+import Control.Monad.IO.Class (liftIO)
+
 import Unsafe.Coerce
 -- | Constrained splice.
 -- 
@@ -39,21 +41,21 @@ newtype CSpliceQ typ constr = CSpliceQ { splice :: SpliceQ (typ constr) }
 -- TODO: Debug.Trace the `fromMat` function
 
 -- TODO: Test if this instance improves performance
-instance SizedSemiring (CSpliceQ Mat) where
+{-instance SizedSemiring (CSpliceQ Mat) where
   (CSpliceQ e1) `plus` (CSpliceQ e2) = CSpliceQ
     [|| let (Mat lhs) = $$e1
             (Mat rhs) = $$e2
         in Mat $ lhs `LinAlg.add` rhs ||]
   (CSpliceQ e1) `times` (CSpliceQ e2) = CSpliceQ
     [|| let (Mat lhs) = $$e1
-            (Mat rhs) = $$e2
+            (Mat rhs) = $$e2  
         in Mat $ (LinAlg.<>) lhs rhs ||]
   tr (CSpliceQ e1) = CSpliceQ
      [|| let (Mat mat) = $$e1 in Mat $ LinAlg.tr mat ||]
   fromMat mat = CSpliceQ [|| id mat ||]
-
+-}
 -- Inlined by hands functions from other instances
-instance (GCompare k) => SizedSemiring (CSpliceQ (Dual Mat (Hom Mat (Endo (Sparse k Mat))))) where 
+{- instance (GCompare k) => SizedSemiring (CSpliceQ (Dual Mat (Hom Mat (Endo (Sparse k Mat))))) where 
   (CSpliceQ e1) `plus` (CSpliceQ e2) = CSpliceQ [||
       let Dual (Mat matL) (Hom df1) = $$e1
           Dual (Mat matR) (Hom df2) = $$e2
@@ -70,20 +72,61 @@ instance (GCompare k) => SizedSemiring (CSpliceQ (Dual Mat (Hom Mat (Endo (Spars
     let Dual (Mat mat) (Hom f) = $$e1
     in Dual (Mat $ LinAlg.tr mat) (Hom $ \(Mat grad) -> f (Mat (LinAlg.tr grad))) ||]
   fromMat mat = CSpliceQ [|| Dual mat mempty ||]
+-}
 
 -- TODO: Try to use TH to use "SizedSemiring (CSpliceQ Mat)" instance 
-{-
 
 instance (GCompare k) => SizedSemiring (CSpliceQ (Dual Mat (Hom Mat (Endo (Sparse k Mat))))) where 
   fromMat mat = CSpliceQ [|| Dual mat mempty ||]
-  tr (CSpliceQ e1) = CSpliceQ $ do
-    (TH.TExp a) <- TH.examineCode [|| e1 ||]
-    unsafeCoerce $ e1
-  plus = undefined 
-  times = undefined 
+  tr (CSpliceQ e1) = CSpliceQ $ liftSplice $ do
+    a <- TH.unTypeCode e1
+--    _ <- liftIO $ appendFile "/home/rinat/autodiff/autodiff-exp/splices.txt" $ show $ TH.ppr a
+--    _ <-   liftIO $ appendFile "/home/rinat/autodiff/autodiff-exp/splices.txt" "\ntt1\n\n"   
+    b <- examineCode   [||
+                           let Dual (Mat mat) (Hom f) = $$e1
+                           in Dual (Mat $ LinAlg.tr mat) (Hom $ \(Mat grad) -> f (Mat (LinAlg.tr grad))) 
+                        ||]
+    return b
+  (CSpliceQ e1) `plus` (CSpliceQ e2) = CSpliceQ $ liftSplice $ do 
+    a <- TH.unTypeCode e1
+--    _ <- liftIO $ appendFile "/home/rinat/autodiff/autodiff-exp/splices.txt" $ show $ TH.ppr a
+--    _ <-   liftIO $ appendFile "/home/rinat/autodiff/autodiff-exp/splices.txt" "\nuu2\n\n"   
+    b <- examineCode $ [||
+                           let (matL, df1) = $$(opt e1)
+                               (matR, df2) = $$(opt e2)
+                           in Dual (Mat $ (LinAlg.add) matL matR) (Hom $ \grad -> (df2 grad) <> (df1 grad))
+                      ||]
+    return b
 
--}
-   
+  (CSpliceQ e1) `times` (CSpliceQ e2) = CSpliceQ $ liftSplice $ do 
+    a <- TH.unTypeCode e1
+--    _ <- liftIO $ appendFile "/home/rinat/autodiff/autodiff-exp/splices.txt" $ show $ TH.ppr a
+--    _ <-   liftIO $ appendFile "/home/rinat/autodiff/autodiff-exp/splices.txt" "\nii3\n\n"
+
+    b <- examineCode $ [|| let (matL, df1) = $$(opt e1)
+                               (matR, df2) = $$(opt e2)
+                           in Dual (Mat $ (LinAlg.mul) matL matR) $ 
+                                    (Hom $ \(Mat grad) -> (df2 $ (Mat $ (LinAlg.tr matL) `LinAlg.mul` grad)) <> (df1 $ (Mat $ grad `LinAlg.mul` (LinAlg.tr matR))) )
+          ||]
+
+--    a' <- TH.unTypeCode $ TH.liftCode $ return b
+--    b' <- case a' of
+--            TH.LetE [exp1, exp2] mainExp -> do
+--                                          liftIO $ appendFile "/home/rinat/autodiff/autodiff-exp/splices3.txt" (show $ mainExp)
+--                                          liftIO $ appendFile "/home/rinat/autodiff/autodiff-exp/splices3.txt" "\npp67\n\n"
+--                                          liftIO $ appendFile "/home/rinat/autodiff/autodiff-exp/splices3.txt" (show $ exp2)
+--                                          liftIO $ appendFile "/home/rinat/autodiff/autodiff-exp/splices3.txt" "\npp68\n\n"
+--                                          return $ TH.LetE [exp1, exp2] mainExp
+--            _ -> return a'
+--    _ <- liftIO $ appendFile "/home/rinat/autodiff/autodiff-exp/splicesqq.txt" $ show (TH.ppr a')
+--    _ <- liftIO $ appendFile "/home/rinat/autodiff/autodiff-exp/splicesqq.txt" "\npp3\n\n"
+    return b
+
+opt :: SpliceQ (Dual Mat (Hom Mat (Endo (Sparse k Mat))) '(n, k1))
+    -> Code TH.Q (LinAlg.L n k1, Mat '(n, k1) -> Endo (Sparse k Mat))
+opt e1 = [|| let Dual (Mat matL) (Hom df1) = $$(e1)
+                           in (matL, df1)||]
+
 reverseADStaged ::
   forall v d.
   (GCompare v, SizedSemiring d, forall tup. Semigroup (d tup), SizedSemiring

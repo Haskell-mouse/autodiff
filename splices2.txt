@@ -1,0 +1,93 @@
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037301] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037302]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037301)) (VarE acc_6989586621679037302))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037315] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037316]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037315)) (VarE acc_6989586621679037316))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights2)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037293] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037294]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights2)) (VarE grad_6989586621679037293)) (VarE acc_6989586621679037294))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037342] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037343]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037342)) (VarE acc_6989586621679037343))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037356] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037357]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037356)) (VarE acc_6989586621679037357))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights2)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037334] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037335]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights2)) (VarE grad_6989586621679037334)) (VarE acc_6989586621679037335))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights3)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037285] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037286]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights3)) (VarE grad_6989586621679037285)) (VarE acc_6989586621679037286))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037396] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037397]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037396)) (VarE acc_6989586621679037397))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037410] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037411]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037410)) (VarE acc_6989586621679037411))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights2)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037388] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037389]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights2)) (VarE grad_6989586621679037388)) (VarE acc_6989586621679037389))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037437] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037438]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037437)) (VarE acc_6989586621679037438))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037451] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037452]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037451)) (VarE acc_6989586621679037452))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights2)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037429] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037430]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights2)) (VarE grad_6989586621679037429)) (VarE acc_6989586621679037430))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights3)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037380] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037381]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights3)) (VarE grad_6989586621679037380)) (VarE acc_6989586621679037381))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights4)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037277] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037278]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights4)) (VarE grad_6989586621679037277)) (VarE acc_6989586621679037278))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037504] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037505]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037504)) (VarE acc_6989586621679037505))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037518] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037519]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037518)) (VarE acc_6989586621679037519))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights2)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037496] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037497]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights2)) (VarE grad_6989586621679037496)) (VarE acc_6989586621679037497))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037545] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037546]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037545)) (VarE acc_6989586621679037546))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037559] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037560]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037559)) (VarE acc_6989586621679037560))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights2)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037537] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037538]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights2)) (VarE grad_6989586621679037537)) (VarE acc_6989586621679037538))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights3)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037488] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037489]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights3)) (VarE grad_6989586621679037488)) (VarE acc_6989586621679037489))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037599] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037600]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037599)) (VarE acc_6989586621679037600))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037613] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037614]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037613)) (VarE acc_6989586621679037614))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights2)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037591] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037592]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights2)) (VarE grad_6989586621679037591)) (VarE acc_6989586621679037592))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037640] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037641]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037640)) (VarE acc_6989586621679037641))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights1)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037654] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037655]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights1)) (VarE grad_6989586621679037654)) (VarE acc_6989586621679037655))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights2)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037632] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037633]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights2)) (VarE grad_6989586621679037632)) (VarE acc_6989586621679037633))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights3)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037583] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037584]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights3)) (VarE grad_6989586621679037583)) (VarE acc_6989586621679037584))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (InfixE (Just (ConE Env.SzWeights4)) (VarE Env.var2Getter) (Just (VarE net_6989586621679037270)))) (InfixE (Just (ConE Sized.Hom)) (VarE GHC.Base.$) (Just (LamE [VarP grad_6989586621679037480] (InfixE (Just (ConE Data.Semigroup.Internal.Endo)) (VarE GHC.Base.$) (Just (LamE [ConP Sized.Sparse [] [VarP acc_6989586621679037481]] (InfixE (Just (ConE Sized.Sparse)) (VarE GHC.Base.$) (Just (AppE (AppE (AppE (AppE (VarE Data.Dependent.Map.insertWith) (VarE Sized.plus)) (ConE Env.SzWeights4)) (VarE grad_6989586621679037480)) (VarE acc_6989586621679037481))))))))))
+ppi3
+
+AppE (AppE (ConE Sized.Dual) (AppE (ConE Sized.Mat) (AppE (VarE Internal.Static.fromList) (ListE [LitE (RationalL (1 % 1)),LitE (RationalL (1 % 1)),LitE (RationalL (1 % 1)),LitE (RationalL (1 % 1)),LitE (RationalL (1 % 1)),LitE (RationalL (1 % 1)),LitE (RationalL (1 % 1)),LitE (RationalL (1 % 1)),LitE (RationalL (1 % 1)),LitE (RationalL (1 % 1))])))) (VarE GHC.Base.mempty)
+ppi3
+
