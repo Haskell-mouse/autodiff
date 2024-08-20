@@ -1,11 +1,11 @@
-/home/rinat/autodiff/autodiff-exp/src/Sized.hs:227:1-15: Splicing declarations
+/home/rinat/autodiff/autodiff-exp/src/Sized.hs:229:1-15: Splicing declarations
     deriveGEq ''Var
   ======>
     instance GEq Var where
       geq X X = do return Refl
       geq Y Y = do return Refl
       geq _ _ = Nothing
-/home/rinat/autodiff/autodiff-exp/src/Sized.hs:228:1-20: Splicing declarations
+/home/rinat/autodiff/autodiff-exp/src/Sized.hs:230:1-20: Splicing declarations
     deriveGCompare ''Var
   ======>
     instance GCompare Var where
@@ -33,7 +33,7 @@
         _
         Y {}
         = some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.GGT
-/home/rinat/autodiff/autodiff-exp/src/Sized.hs:229:1-17: Splicing declarations
+/home/rinat/autodiff/autodiff-exp/src/Sized.hs:231:1-17: Splicing declarations
     deriveGShow ''Var
   ======>
     instance some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.GShow Var where
@@ -45,7 +45,7 @@
         _
         Y
         = showString "Y"
-/home/rinat/autodiff/autodiff-exp/src/Sized.hs:230:1-19: Splicing declarations
+/home/rinat/autodiff/autodiff-exp/src/Sized.hs:232:1-19: Splicing declarations
     deriveArgDict ''Var
   ======>
     instance Data.Constraint.Extras.ArgDict c_a9dg Var where

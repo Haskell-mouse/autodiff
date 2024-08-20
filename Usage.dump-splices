@@ -1,0 +1,14 @@
+src/Usage.hs:13:14-35: Splicing expression
+    genBody' "x" testFnD
+  ======>
+    ((tr
+        ((Mat (LinAlg.matrix [1.0, 2.0, 3.0]) :: Mat '(1, 3)) `times` x)
+        `times`
+          ((Mat (LinAlg.matrix [1.0]) :: Mat '(1, 1))
+             `times` tr (Mat (LinAlg.matrix [5.0, 6.0, 7.0]) :: Mat '(3, 1))))
+       `plus`
+         (tr (Mat (LinAlg.matrix [1.0, 2.0, 3.0]) :: Mat '(1, 3))
+            `times`
+              (((Mat (LinAlg.matrix [1.0]) :: Mat '(1, 1))
+                  `times` tr (Mat (LinAlg.matrix [5.0, 6.0, 7.0]) :: Mat '(3, 1)))
+                 `times` tr x)))

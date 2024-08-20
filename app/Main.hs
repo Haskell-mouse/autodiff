@@ -7,7 +7,4 @@ import Env
 import Sized
 
 main :: IO ()
-main = do 
-    net <- setupSizedNet
-    return $ netFromMap . $$(testAdStaged reverseADEndoStaged) $ net
-    print "read the expanded splice!"
+main = return ()

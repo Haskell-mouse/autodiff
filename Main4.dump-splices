@@ -1,0 +1,61 @@
+bench/Main.hs:42:65-98: Splicing expression
+    testAdStaged reverseADEndoStaged
+  ======>
+    \ net_aFRi
+      -> let
+           Hom rev_aFRj
+             = Hom
+                 (\ grad_aFRl
+                    -> let
+                         Hom df1_aFRn
+                           = Hom
+                               (\ grad_aFRo
+                                  -> let
+                                       Hom df1_aFRq = mempty
+                                       Hom df2_aFRp = mempty
+                                     in
+                                       ((df2_aFRp
+                                           $ (tr
+                                                (oneMat ::
+                                                   forall m_aFRr
+                                                          n_aFRs. (GHC.TypeNats.KnownNat m_aFRr,
+                                                                   GHC.TypeNats.KnownNat n_aFRs) =>
+                                                                  Mat '(m_aFRr, n_aFRs))
+                                                `times` grad_aFRo))
+                                          <>
+                                            (df1_aFRq
+                                               $ (grad_aFRo
+                                                    `times`
+                                                      tr
+                                                        (Mat
+                                                           (hmatrix-0.20.2-5nHMRF0H22yCQ9M6BJ3cFd:Internal.Static.fromList
+                                                              [1.0]))))))
+                         Hom df2_aFRm
+                           = Hom
+                               (\ grad_aFRt
+                                  -> let
+                                       Hom df1_aFRv = mempty
+                                       Hom df2_aFRu = mempty
+                                     in
+                                       ((df2_aFRu
+                                           $ (tr
+                                                (oneMat ::
+                                                   forall m_aFRw
+                                                          n_aFRx. (GHC.TypeNats.KnownNat m_aFRw,
+                                                                   GHC.TypeNats.KnownNat n_aFRx) =>
+                                                                  Mat '(m_aFRw, n_aFRx))
+                                                `times` grad_aFRt))
+                                          <>
+                                            (df1_aFRv
+                                               $ (grad_aFRt
+                                                    `times`
+                                                      tr
+                                                        (Mat
+                                                           (hmatrix-0.20.2-5nHMRF0H22yCQ9M6BJ3cFd:Internal.Static.fromList
+                                                              [0.0]))))))
+                       in (df1_aFRn grad_aFRl <> df2_aFRm grad_aFRl))
+           Sparse dmap_aFRk
+             = (base:Data.Semigroup.Internal.appEndo
+                  (rev_aFRj $ fromMat (idMat :: Mat '(1, 1))))
+                 mempty
+         in dmap_aFRk

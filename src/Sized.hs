@@ -1,4 +1,6 @@
 {-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module Sized ( SizedSemiring(..)
              , Mat(..)
              , Expr(..)

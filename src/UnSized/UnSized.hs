@@ -1,0 +1,250 @@
+{-# LANGUAGE TemplateHaskell #-}
+
+module UnSized.UnSized where 
+
+import GHC.TypeLits
+import Data.Kind
+import Data.Map
+import Data.Constraint.Extras.TH (deriveArgDict)
+import Language.Haskell.TH.Syntax.Compat
+import Control.DeepSeq (NFData(..))
+import Data.Monoid (Endo(..))
+
+import Control.Monad (guard)
+
+import Data.Maybe (fromMaybe, fromJust, isJust)
+
+import Test.QuickCheck
+import Unsafe.Coerce
+import System.IO.Unsafe (unsafePerformIO)
+import Data.IORef
+
+import qualified Language.Haskell.TH as TH
+import qualified Language.Haskell.TH.Syntax as TH
+
+import Control.Monad.IO.Class (liftIO)
+
+
+--import Data.Semiring
+
+class (Semiring d, Monoid e) => Module d e | e -> d where 
+    vscale :: d -> e -> e
+
+class Semiring a where
+    zero :: a
+    one :: a
+    plus :: a -> a -> a
+    times :: a -> a -> a
+
+fromNatural :: Semiring a => Natural -> a
+fromNatural 0 = zero 
+fromNatural x = one `plus` (fromNatural (x - 1))
+-- | The class of semirings with an additive inverse.
+--
+--     @'negate' a '+' a = 'zero'@
+
+class Semiring a => Ring a where
+  negate :: a -> a
+
+
+type Expr :: Type -> Type
+data Expr v where
+    (:*:) :: Expr v -> Expr v -> Expr v
+    (:+:) :: Expr v -> Expr v -> Expr v
+    Var :: (Semiring v) => v -> Expr v
+--    Const :: v -> Expr v
+
+infixl 7 :*:
+infixl 6 :+:
+
+deriving instance (Show v) => Show (Expr v)
+
+data SExpr v where 
+    (::*::) :: SExpr v -> SExpr v -> SExpr v
+    (::+::) :: SExpr v -> SExpr v -> SExpr v
+    Val :: (Semiring v) => v -> SExpr v
+    SVar :: v -> SExpr v -- get rid of SpliceQ, move code generation to eval function.
+    -- take a look onto the original code. 
+--    LetBind :: Int -> SExpr v -> SExpr v -> SExpr v
+
+
+deriving instance (Show v) => Show (SExpr v)
+
+instance Semiring v => Semiring (Expr v) where
+    plus = (:+:)
+    times = (:*:)
+    zero = Var zero
+    one = Var one
+
+instance Semiring v => Semiring (SExpr v) where
+    plus = (::+::)
+    times = (::*::)
+    zero = Val zero
+    one = Val one
+
+instance Semigroup (Expr v) where
+    lhs@(_ :+: _)   <> rhs@(_ :+: _)   = lhs :+: rhs
+    lhs@(_ :+: _)   <> rhs@(_ :*: _)   = lhs :+: rhs
+    lhs@(_ :+: _)   <> rhs@(Var _)     = lhs :+: rhs
+    lhs@(_ :*: _)   <> rhs@(_ :+: _)   = lhs :+: rhs
+    lhs@(_ :*: _)   <> rhs@(_ :*: _)   = lhs :+: rhs
+    lhs@(_ :*: _)   <> rhs@(Var _)     = lhs :+: rhs
+    lhs@(Var _)     <> rhs@(_ :+: _)   = lhs :+: rhs
+    lhs@(Var _)     <> rhs@(_ :*: _)   = lhs :+: rhs
+    lhs@(Var _)     <> rhs@(Var _)     = lhs :+: rhs
+
+instance Semigroup (SExpr v) where
+    lhs@(_ ::+:: _)   <> rhs@(_ ::+:: _)   = lhs ::+:: rhs
+    lhs@(_ ::+:: _)   <> rhs@(_ ::*:: _)   = lhs ::+:: rhs
+    lhs@(_ ::+:: _)   <> rhs@(Val _)     = lhs ::+:: rhs
+    lhs@(_ ::*:: _)   <> rhs@(_ ::+:: _)   = lhs ::+:: rhs
+    lhs@(_ ::*:: _)   <> rhs@(_ ::+:: _)   = lhs ::+:: rhs
+    lhs@(_ ::*:: _)   <> rhs@(Val _)     = lhs ::+:: rhs
+    lhs@(Val _)     <> rhs@(_ ::+:: _)   = lhs ::+:: rhs
+    lhs@(Val _)     <> rhs@(_ ::*:: _)   = lhs ::+:: rhs
+    lhs@(Val _)     <> rhs@(Val _)     = lhs ::+:: rhs
+    lhs@(SVar _)     <> rhs@(SVar _)     = lhs ::+:: rhs
+    lhs@(SVar _)     <> rhs@(_ ::+:: _)   = lhs ::+:: rhs
+    lhs@(SVar _)     <> rhs@(_ ::*:: _)   = lhs ::+:: rhs
+    lhs@(SVar _)     <> rhs@(Val _)     = lhs ::+:: rhs
+
+
+eval :: (Semiring d)
+     => (v -> d)
+     -> Expr v
+     -> d
+eval env (lhs :+: rhs) = eval env lhs `plus` eval env rhs
+eval env (lhs :*: rhs) = eval env lhs `times` eval env rhs
+eval env (Var v) = env v
+{-
+eval' :: (Semiring d)
+      => (v -> d)
+      -> Expr v 
+      -> d
+eval' env 
+-}
+
+eval' :: (Semiring d)
+     => (Bool -> v -> d)
+     -> SExpr v
+     -> d
+eval' env (lhs ::+:: rhs) = eval' env lhs `plus` eval' env rhs
+eval' env (lhs ::*:: rhs) = eval' env lhs `times` eval' env rhs
+eval' env (SVar v) = env True v
+eval' env (Val a) = env False a
+
+
+type Dual :: Type -> Type -> Type
+data Dual d e = Dual d e
+
+instance Module d e => Semiring (Dual d e) where
+    plus (Dual f df) (Dual g dg) = Dual (f `plus` g) (df <> dg)
+    times (Dual f df) (Dual g dg) = Dual (f `times` g) ((f `vscale` dg) <> (g `vscale` df))
+    one = Dual one mempty
+    zero = Dual zero mempty
+
+type Hom :: Type -> Type -> Type
+newtype Hom d e = Hom (d -> e)
+
+instance Semigroup e => Semigroup (Hom d e) where
+    Hom lhs <> Hom rhs = Hom $ \grad -> lhs grad <> rhs grad
+
+instance Monoid e => Monoid (Hom d e) where
+    mempty = Hom $ \_ -> mempty
+
+instance (Semiring d, Monoid e) => Module d (Hom d e) where
+    vscale factor (Hom f) = Hom $ \grad -> f (factor `times` grad)
+
+type Sparse :: Type -> Type -> Type
+newtype Sparse v d = Sparse (Map v d)
+
+instance (Ord k, Semigroup v) => Semigroup (Sparse k v) where
+    (Sparse lhs) <> (Sparse rhs) = Sparse $ unionWithKey (const (<>)) lhs rhs
+
+instance (Ord k, Semigroup v) => Monoid (Sparse k v) where
+    mempty = Sparse Data.Map.empty
+
+insertWithSparse :: Ord k => (v -> v -> v) -> k -> v -> Sparse k v -> Sparse k v
+insertWithSparse f k v (Sparse m) = Sparse (insertWith f k v m)
+
+instance Semiring Int where
+    plus = (+)
+    times = (*)
+    one = 1
+    zero = 0
+
+instance Semiring Double where
+    plus = (+)
+    times = (*)
+    one = 1
+    zero = 0
+
+instance Semiring d => Semiring (SpliceQ d) where 
+    plus x y = [|| $$x `plus` $$y ||]
+    times x y = [|| $$x `times` $$y ||]
+    one = [|| one ||]
+    zero = [|| zero ||]
+
+{-instance {-# OVERLAP #-} Semiring (SpliceQ Double) where 
+    plus x y = x `optPlus` y
+    times x y = x `optMult` y
+    one = [|| one ||]
+    zero = [|| zero ||]
+-}
+
+optPlus :: SpliceQ Double -> SpliceQ Double -> SpliceQ Double 
+optPlus f s = 
+  let x = [|| $$f ||]
+      y = [|| $$s ||]
+      z =  do 
+            spX <- TH.runQ $ examineSplice f-- :: TH.Q TH.TExp
+            spY <- TH.runQ $ examineSplice s-- :: TH.Q TH.TExp
+            let uSpX = TH.unType spX 
+                uSpY = TH.unType spY 
+            case (uSpX, uSpX) of 
+              (TH.LitE (TH.DoublePrimL t), _) | fromRational t == (zero :: Double) -> return spY
+              (_, TH.LitE (TH.DoublePrimL t)) | fromRational t == (zero :: Double) -> return spX
+              _ ->  liftIO (appendFile "SplicePlusFirst1.txt" ((show uSpX) ++ "\n")) >> examineSplice [|| $$f + $$s ||]
+  in TH.liftCode z
+     
+
+optMult :: SpliceQ Double -> SpliceQ Double -> SpliceQ Double 
+optMult f s = 
+  let x = [|| $$f ||]
+      y = [|| $$s ||]
+      z =  do 
+            spX <-  examineSplice f-- :: TH.Q TH.TExp
+            spY <-  examineSplice s-- :: TH.Q TH.TExp
+            let uSpX = TH.unType spX 
+                uSpY = TH.unType spY 
+            case (uSpX, uSpX) of 
+              (TH.LitE (TH.DoublePrimL t), _) | fromRational t == (zero :: Double) -> return spX
+              (_, TH.LitE (TH.DoublePrimL t)) | fromRational t == (zero :: Double) -> return spY
+              (TH.LitE (TH.DoublePrimL t), _) | fromRational t == (one :: Double) -> return spY
+              (_, TH.LitE (TH.DoublePrimL t)) | fromRational t == (one :: Double) -> return spX
+              _ ->  liftIO (appendFile "SplicePlusFirst1.txt" ((show uSpX) ++ "\n")) >> (examineSplice [|| $$f * $$s ||])
+  in TH.liftCode z
+
+instance Semigroup Double where 
+    (<>) = (Prelude.+)
+
+instance Semigroup d => Semigroup (SpliceQ d) where 
+    rhs <> lhs = 
+        [|| let r = $$rhs
+                l = $$lhs 
+            in r <> l ||]
+
+instance Monoid d => Monoid (SpliceQ d) where 
+    mempty = [|| mempty ||]
+
+
+f :: forall a. a -> SpliceQ a 
+f x = [|| undefined :: a ||]
+
+g123 :: SpliceQ Bool
+g123 = f True 
+
+checkOpt :: SExpr (SpliceQ Double) -> SpliceQ Double
+checkOpt (Val d) = d 
+checkOpt (r ::+:: l) = optPlus (checkOpt r) (checkOpt l)
+checkOpt (r ::*:: l) = optMult (checkOpt r) (checkOpt l)

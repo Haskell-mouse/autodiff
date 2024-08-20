@@ -1,3 +1,5 @@
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module StagedTests (testAdStaged) where
 
 import Data.Dependent.Map (DMap)
@@ -5,6 +7,7 @@ import Env
   ( SizedNet,
     SizedNetVar,
     exprSizedTestStaged,
+    exprSizedTestStaged',
     setupSizedInput,
     var2Getter,
   )
@@ -15,13 +18,14 @@ import Sized.LiftInstances ()
 import Sized.Staged
   ( AutoDiffStagedType,
     CSpliceQ (CSpliceQ, splice),
+    SCont
   )
 import Data.Monoid (Endo(..))
 
 testAdStaged :: forall d.
   ( SizedSemiring d,
     forall tup. Semigroup (d tup),
-    SizedSemiring (CSpliceQ (Dual d (Hom d (Endo (Sparse SizedNetVar d)))))
+    SizedSemiring (SCont (CSpliceQ d) (CSpliceQ (Hom d (Endo (Sparse SizedNetVar d)))))
   ) =>
   AutoDiffStagedType ->
   SpliceQ (SizedNet d -> DMap SizedNetVar d)

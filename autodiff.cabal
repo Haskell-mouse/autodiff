@@ -30,6 +30,9 @@ library
       Sized
       Sized.LiftInstances
       Sized.Staged
+      UnSized.Staged
+      UnSized.StagedTest
+      UnSized.UnSized
       Usage
       Usage2
   other-modules:
@@ -66,11 +69,13 @@ library
     , base >=4.7 && <5
     , constraints
     , constraints-extras
+    , containers
     , deepseq
     , dependent-map
     , dependent-sum-template
     , ghc-prim
     , hmatrix
+    , semirings
     , some
     , template-haskell
     , th-compat
@@ -116,6 +121,7 @@ executable autodiff-exe
     , base >=4.7 && <5
     , constraints
     , constraints-extras
+    , containers
     , deepseq
     , dependent-map
     , dependent-sum
@@ -124,6 +130,7 @@ executable autodiff-exe
     , hmatrix
     , hmatrix-backprop
     , microlens-th
+    , semirings
     , some
     , template-haskell
     , th-compat
@@ -167,11 +174,13 @@ test-suite autodiff-test
     , base >=4.7 && <5
     , constraints
     , constraints-extras
+    , containers
     , deepseq
     , dependent-map
     , dependent-sum-template
     , ghc-prim
     , hmatrix
+    , semirings
     , some
     , template-haskell
     , th-compat
@@ -218,6 +227,7 @@ benchmark algebraic-benches
     , base >=4.7 && <5
     , constraints
     , constraints-extras
+    , containers
     , criterion
     , deepseq
     , dependent-map
@@ -228,6 +238,7 @@ benchmark algebraic-benches
     , hmatrix-backprop
     , microlens
     , microlens-th
+    , semirings
     , some
     , template-haskell
     , th-compat

@@ -1,0 +1,56 @@
+bench/Main.hs:42:65-98: Splicing expression
+    testAdStaged reverseADEndoStaged
+  ======>
+    \ net_aFQh
+      -> let
+           Hom rev_aFQi
+             = Hom
+                 (\ grad_aFQk
+                    -> let
+                         Hom df1_aFQm
+                           = Hom
+                               (\ grad_aFQn
+                                  -> let
+                                       Hom df1_aFQp = mempty
+                                       Hom df2_aFQo = mempty
+                                     in
+                                       ((df2_aFQo
+                                           $ (tr
+                                                (Mat
+                                                   (hmatrix-0.20.2-5nHMRF0H22yCQ9M6BJ3cFd:Internal.Static.fromList
+                                                      [1.0]))
+                                                `times` grad_aFQn))
+                                          <>
+                                            (df1_aFQp
+                                               $ (grad_aFQn
+                                                    `times`
+                                                      tr
+                                                        (Mat
+                                                           (hmatrix-0.20.2-5nHMRF0H22yCQ9M6BJ3cFd:Internal.Static.fromList
+                                                              [1.0]))))))
+                         Hom df2_aFQl
+                           = Hom
+                               (\ grad_aFQq
+                                  -> let
+                                       Hom df1_aFQs = mempty
+                                       Hom df2_aFQr = mempty
+                                     in
+                                       ((df2_aFQr
+                                           $ (tr
+                                                (Mat
+                                                   (hmatrix-0.20.2-5nHMRF0H22yCQ9M6BJ3cFd:Internal.Static.fromList
+                                                      [1.0]))
+                                                `times` grad_aFQq))
+                                          <>
+                                            (df1_aFQs
+                                               $ (grad_aFQq
+                                                    `times`
+                                                      tr
+                                                        (Mat
+                                                           (hmatrix-0.20.2-5nHMRF0H22yCQ9M6BJ3cFd:Internal.Static.fromList
+                                                              [1.0]))))))
+                       in (df1_aFQm grad_aFQk <> df2_aFQl grad_aFQk))
+           Sparse dmap_aFQj
+             = (base:Data.Semigroup.Internal.appEndo (rev_aFQi $ fromMat idMat))
+                 mempty
+         in dmap_aFQj

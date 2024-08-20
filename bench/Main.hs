@@ -9,8 +9,12 @@ import Sized
 import Sized.Staged
 import StagedTests
 
+import Data.Semigroup
+import GHC.TypeLits
+import Numeric.LinearAlgebra.Static (fromList)
+
 main :: IO ()
-main = defaultMain [
+main = defaultMain [ {-
            bgroup "eval" [
               env setupBackpropEnv    $ \tup ->
                   bench "backprop"    $ nf (uncurry (evalBP2 backpropTest)) tup
@@ -28,8 +32,8 @@ main = defaultMain [
            ,  env setupSizedEnv       $ \ ~(net, input) ->
                   bench "ours (dmap)" $ let dmap = mapFromNet net
                                          in nf (uncurry sizedDMapDupTest) (dmap, input)
-           ]
-       ,   bgroup "derive" [
+           ], -}
+           bgroup "derive" [
               env setupBackpropEnv         $ \ ~(net, input) ->
                   bench "backprop"         $ nf (gradBP (flip backpropTest (auto input))) net
            ,  env setupSizedEnv            $ \ ~(net, input) ->
@@ -40,7 +44,15 @@ main = defaultMain [
                   bench "ours +endo"       $ nf (netFromMap . reverseADEndo (flip var2Getter net)) (exprSizedTest input)
            , env setupSizedNet             $ \ net ->
                   bench "ours + endo + th" $ nf (netFromMap . $$(testAdStaged reverseADEndoStaged)) net
-           ,  env setupSizedEnv             $ \ ~(net, input) ->
+
+
+
+
+
+
+
+
+{-           ,  env setupSizedEnv             $ \ ~(net, input) ->
                   bench "ours (dmap) -expr" $ let dmap = mapFromNet net
                                                in nf (netFromMap . reverseAD' (flip sizedDMapTest (fromMat input))) dmap
            ,  env setupSizedEnv             $ \ ~(net, input) ->
@@ -51,9 +63,9 @@ main = defaultMain [
                                                      in nf (netFromMap . reverseADTopo (flip sizedDMapTest (fromMat input))) dmap
            ,  env setupSizedEnv             $ \ ~(net, input) ->
                   bench "ours (dmap) +endo +topo -expr" $ let dmap = mapFromNet net
-                                                           in nf (netFromMap . reverseADTopoEndo (flip sizedDMapTest (fromMat input))) dmap
+                                                           in nf (netFromMap . reverseADTopoEndo (flip sizedDMapTest (fromMat input))) dmap -}
            ]
-       ,   bgroup "derive (dup)" [
+ {-      ,   bgroup "derive (dup)" [
               env setupBackpropEnv   $ \ ~(net, input) ->
                   bench "backprop"   $ nf (gradBP (flip backpropDupTest (auto input))) net
            ,  env setupSizedEnv      $ \ ~(net, input) ->
@@ -88,7 +100,7 @@ main = defaultMain [
            ,  env setupSizedEnv      $ \ ~(net, input) ->
                   bench "ours (dmap) +endo +topo -expr" $ let dmap = mapFromNet net
                                                            in nf (netFromMap . reverseADTopoEndo (flip sizedDMapTripTest (fromMat input))) dmap
-           ]
+           ] -}
        ,   env setupSizedEnv $ \ ~(net, _) -> bench "netFromMap . mapFromNet" $ nf (netFromMap . mapFromNet) net
        ]
 {-

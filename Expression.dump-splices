@@ -1,0 +1,8 @@
+src/Expression.hs:81:1-17: Splicing declarations
+    deriveGShow ''Arg
+  ======>
+    instance some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.GShow Arg where
+      some-1.0.4.1-Ct8z5dnUskU11VPMCcWzAc:Data.GADT.Internal.gshowsPrec
+        _
+        Arg
+        = showString "Arg"

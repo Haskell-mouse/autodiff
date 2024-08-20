@@ -148,6 +148,9 @@ sizedTest SizedNet{..} input = fromMat oneMat `times` layer4Out
           layer2Out = szWeights2 `times` layer1Out `plus` szBias2
           layer1Out = szWeights1 `times` input     `plus` szBias1
 
+sizedTest' ::  Mat '(1, 1) -- Mat (1,1) -> Mat (1,1)
+sizedTest' = ((oneMat :: Mat '(1 , 1)) `times` ((zeroMat :: Mat '(1, 1)))) `plus` (( (oneMat :: Mat '(1, 1)))) `times` ((oneMat :: Mat '(1, 1)))
+
 sizedDupTest :: SizedSemiring d => SizedNet d -> d '(784, 1) -> d '(1, 1)
 sizedDupTest SizedNet{..} input = let res = fromMat oneMat `times` layer4Out in res `plus` res
     where layer4Out = szWeights4 `times` layer3Out `plus` szBias4
@@ -181,6 +184,9 @@ exprSizedTest input = sizedTest exprSizedNet (fromMat input)
 
 exprSizedTestStaged :: Mat '(784, 1) -> Expr (CSpliceQ SizedNetVar) '(1, 1)
 exprSizedTestStaged input = sizedTest exprSizedNetStaged (fromMat input)
+
+exprSizedTestStaged' :: Expr (CSpliceQ SizedNetVar) '(1, 1)
+exprSizedTestStaged' = fromMat sizedTest'
 
 exprSizedDupTest :: Mat '(784, 1) -> Expr SizedNetVar '(1, 1)
 exprSizedDupTest input = sizedDupTest exprSizedNet (fromMat input)

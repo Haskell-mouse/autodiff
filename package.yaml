@@ -32,6 +32,8 @@ dependencies:
 - constraints-extras
 - deepseq
 - th-compat
+- semirings
+- containers
 
 default-extensions:
 - MultiParamTypeClasses
