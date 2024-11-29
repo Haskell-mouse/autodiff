@@ -53,11 +53,28 @@ testAdStaged20N360 ::
   (Map Nat (SExpr Double))
 testAdStaged20N360 adFunc = adFunc (\var -> (SVar var)) exprSizedTestStaged20N360
 
+testAdStaged20N240 :: 
+  AutoDiffStagedType ->
+  (Map Nat (SExpr Double))
+testAdStaged20N240 adFunc = adFunc (\var -> (SVar var)) exprSizedTestStaged20N240
+
 testAdSB20 :: 
   SB.AutoDiffStagedType ->
   [SpliceQ Double] ->
   (Map Nat (SpliceQ Double))
 testAdSB20 adFunc vals = adFunc (\var -> (vals !! (fromNatural var))) exprSizedTestStaged20Basic
+
+testAdSB20N240 ::  
+  SB.AutoDiffStagedType ->
+  [SpliceQ Double] ->
+  (Map Nat (SpliceQ Double))
+testAdSB20N240 adFunc vals = adFunc (\var -> (vals !! (fromNatural var))) exprSizedTestStaged20N240Basic
+
+testAdSB20N360 ::  
+  SB.AutoDiffStagedType ->
+  [SpliceQ Double] ->
+  (Map Nat (SpliceQ Double))
+testAdSB20N360 adFunc vals = adFunc (\var -> (vals !! (fromNatural var))) exprSizedTestStaged20N360Basic
 
 testAdStaged60 :: 
   AutoDiffStagedType ->
@@ -110,33 +127,50 @@ sizedTest20 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 x
       ((fromNatural 11) `times` (x10 `times` (x11 `times` (x12 `times` (x13 `times` x14)))))  `plus`  ((fromNatural 10) `times` (x11 `times` (x12 `times` (x13 `times` (x14 `times` x15)))))  `plus`  ((fromNatural 9) `times` (x12 `times` (x13 `times` (x14 `times` (x15 `times` x16)))))  `plus`  
       ((fromNatural 8) `times` (x13 `times` (x14 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x14 `times` (x15 `times` (x16 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
       ((fromNatural 7) `times` (x16 `times` (x17 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x19 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
-      ((fromNatural 4) `times` (x19 `times` x20))  `plus`  ((fromNatural 3) `times` x20)
+      ((fromNatural 4) `times` (x19 `times` x20))  `plus`  ((fromNatural 3) `times` (x20 `times` (x11 `times` (x5 `times` x1)))) `plus` ((fromNatural 56) `times` (x5 `times` (x6 `times` (x1 `times` (x19 `times` x18))))) `plus` x3 
+
+sizedTest20N240 :: forall d. Semiring d => SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d
+sizedTest20N240 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 x20 = 
+      ((fromNatural 20) `times` (x1 `times` (x2 `times` (x3 `times` (x4 `times` x5))))) `plus`  ((fromNatural 19) `times` (x2 `times` (x3 `times` (x4 `times` (x5 `times` x6)))))  `plus`  ((fromNatural 18) `times` (x3 `times` (x4 `times` (x5 `times` (x6 `times` x7)))))  `plus`  
+      ((fromNatural 17) `times` (x4 `times` (x5 `times` (x6 `times` (x11 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x7 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 `times` (x7 `times` (x8 `times` (x9 `times` x10)))))  `plus`  
+      ((fromNatural 14) `times` (x7 `times` (x8 `times` (x9 `times` (x10 `times` x11)))))  `plus`  ((fromNatural 13) `times` (x8 `times` (x9 `times` (x10 `times` (x11 `times` x12)))))  `plus`  ((fromNatural 12) `times` (x9 `times` (x10 `times` (x11 `times` (x12 `times` x13)))))  `plus`  
+      ((fromNatural 11) `times` (x10 `times` (x11 `times` (x12 `times` (x13 `times` x14)))))  `plus`  ((fromNatural 10) `times` (x11 `times` (x12 `times` (x13 `times` (x14 `times` x15)))))  `plus`  ((fromNatural 9) `times` (x12 `times` (x13 `times` (x14 `times` (x15 `times` x16)))))  `plus`  
+      ((fromNatural 8) `times` (x13 `times` (x14 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x14 `times` (x15 `times` (x16 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
+      ((fromNatural 7) `times` (x16 `times` (x17 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x19 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
+      ((fromNatural 4) `times` (x19 `times` x20))  `plus`  ((fromNatural 3) `times` (x20 `times` (x11 `times` (x5 `times` x1)))) `plus` ((fromNatural 56) `times` (x5 `times` (x6 `times` (x1 `times` (x19 `times` x18))))) `plus` x3 `plus` 
+      ((fromNatural 11) `times` (x1 `times` (x2 `times` (x3 `times` (x4 `times` x5))))) `plus`  ((fromNatural 19) `times` (x2 `times` (x5 `times` (x4 `times` (x5 `times` x6)))))  `plus`  ((fromNatural 18) `times` (x3 `times` (x4 `times` (x5 `times` (x6 `times` x7)))))  `plus`  
+      ((fromNatural 12) `times` (x4 `times` (x5 `times` (x6 `times` (x7 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x15 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 `times` (x7 `times` (x8 `times` (x9 `times` x10)))))  `plus`  
+      ((fromNatural 13) `times` (x7 `times` (x7 `times` (x9 `times` (x10 `times` x11)))))  `plus`  ((fromNatural 13) `times` (x5 `times` (x9 `times` (x10 `times` (x11 `times` x12)))))  `plus`  ((fromNatural 12) `times` (x9 `times` (x10 `times` (x11 `times` (x12 `times` x13)))))  `plus`  
+      ((fromNatural 14) `times` (x10 `times` (x12 `times` (x12 `times` (x13 `times` x14)))))  `plus`  ((fromNatural 10) `times` (x11 `times` (x12 `times` (x13 `times` (x14 `times` x15)))))  `plus`  ((fromNatural 9) `times` (x12 `times` (x13 `times` (x14 `times` (x15 `times` x16)))))  `plus`  
+      ((fromNatural 15) `times` (x13 `times` (x1 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x14 `times` (x15 `times` (x16 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
+      ((fromNatural 16) `times` (x16 `times` (x5 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x6 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
+      ((fromNatural 17) `times` (x19 `times` x20))  `plus` ((fromNatural 3) `times` (x20 `times` (x9 `times` (x4 `times` x1)))) `plus` ((fromNatural 56) `times` (x6 `times` (x6 `times` (x1 `times` (x20 `times` x18))))) `plus` x3  
 
 sizedTest20N360 :: forall d. Semiring d => SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d
 sizedTest20N360 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 x20 = 
       ((fromNatural 20) `times` (x1 `times` (x2 `times` (x3 `times` (x4 `times` x5))))) `plus`  ((fromNatural 19) `times` (x2 `times` (x3 `times` (x4 `times` (x5 `times` x6)))))  `plus`  ((fromNatural 18) `times` (x3 `times` (x4 `times` (x5 `times` (x6 `times` x7)))))  `plus`  
-      ((fromNatural 17) `times` (x4 `times` (x5 `times` (x6 `times` (x7 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x7 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 `times` (x7 `times` (x8 `times` (x9 `times` x10)))))  `plus`  
+      ((fromNatural 17) `times` (x4 `times` (x5 `times` (x6 `times` (x11 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x7 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 `times` (x7 `times` (x8 `times` (x9 `times` x10)))))  `plus`  
       ((fromNatural 14) `times` (x7 `times` (x8 `times` (x9 `times` (x10 `times` x11)))))  `plus`  ((fromNatural 13) `times` (x8 `times` (x9 `times` (x10 `times` (x11 `times` x12)))))  `plus`  ((fromNatural 12) `times` (x9 `times` (x10 `times` (x11 `times` (x12 `times` x13)))))  `plus`  
       ((fromNatural 11) `times` (x10 `times` (x11 `times` (x12 `times` (x13 `times` x14)))))  `plus`  ((fromNatural 10) `times` (x11 `times` (x12 `times` (x13 `times` (x14 `times` x15)))))  `plus`  ((fromNatural 9) `times` (x12 `times` (x13 `times` (x14 `times` (x15 `times` x16)))))  `plus`  
       ((fromNatural 8) `times` (x13 `times` (x14 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x14 `times` (x15 `times` (x16 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
       ((fromNatural 7) `times` (x16 `times` (x17 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x19 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
       ((fromNatural 4) `times` (x19 `times` x20))  `plus`  ((fromNatural 3) `times` x20) `plus` 
-      ((fromNatural 11) `times` (x1 `times` (x2 `times` (x3 `times` (x4 `times` x5))))) `plus`  ((fromNatural 19) `times` (x2 `times` (x3 `times` (x4 `times` (x5 `times` x6)))))  `plus`  ((fromNatural 18) `times` (x3 `times` (x4 `times` (x5 `times` (x6 `times` x7)))))  `plus`  
-      ((fromNatural 12) `times` (x4 `times` (x5 `times` (x6 `times` (x7 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x7 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 `times` (x7 `times` (x8 `times` (x9 `times` x10)))))  `plus`  
-      ((fromNatural 13) `times` (x7 `times` (x8 `times` (x9 `times` (x10 `times` x11)))))  `plus`  ((fromNatural 13) `times` (x8 `times` (x9 `times` (x10 `times` (x11 `times` x12)))))  `plus`  ((fromNatural 12) `times` (x9 `times` (x10 `times` (x11 `times` (x12 `times` x13)))))  `plus`  
-      ((fromNatural 14) `times` (x10 `times` (x11 `times` (x12 `times` (x13 `times` x14)))))  `plus`  ((fromNatural 10) `times` (x11 `times` (x12 `times` (x13 `times` (x14 `times` x15)))))  `plus`  ((fromNatural 9) `times` (x12 `times` (x13 `times` (x14 `times` (x15 `times` x16)))))  `plus`  
-      ((fromNatural 15) `times` (x13 `times` (x14 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x14 `times` (x15 `times` (x16 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
-      ((fromNatural 16) `times` (x16 `times` (x17 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x19 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
+      ((fromNatural 11) `times` (x1 `times` (x2 `times` (x3 `times` (x4 `times` x5))))) `plus`  ((fromNatural 19) `times` (x2 `times` (x5 `times` (x4 `times` (x5 `times` x6)))))  `plus`  ((fromNatural 18) `times` (x3 `times` (x4 `times` (x5 `times` (x6 `times` x7)))))  `plus`  
+      ((fromNatural 12) `times` (x4 `times` (x5 `times` (x6 `times` (x7 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x15 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 `times` (x7 `times` (x8 `times` (x9 `times` x10)))))  `plus`  
+      ((fromNatural 13) `times` (x7 `times` (x7 `times` (x9 `times` (x10 `times` x11)))))  `plus`  ((fromNatural 13) `times` (x5 `times` (x9 `times` (x10 `times` (x11 `times` x12)))))  `plus`  ((fromNatural 12) `times` (x9 `times` (x10 `times` (x11 `times` (x12 `times` x13)))))  `plus`  
+      ((fromNatural 14) `times` (x10 `times` (x12 `times` (x12 `times` (x13 `times` x14)))))  `plus`  ((fromNatural 10) `times` (x11 `times` (x12 `times` (x13 `times` (x14 `times` x15)))))  `plus`  ((fromNatural 9) `times` (x12 `times` (x13 `times` (x14 `times` (x15 `times` x16)))))  `plus`  
+      ((fromNatural 15) `times` (x13 `times` (x1 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x14 `times` (x15 `times` (x16 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
+      ((fromNatural 16) `times` (x16 `times` (x5 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x6 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
       ((fromNatural 17) `times` (x19 `times` x20))  `plus`  ((fromNatural 3) `times` x20) `plus`
       ((fromNatural 12) `times` (x1 `times` (x2 `times` (x3 `times` (x4 `times` x5))))) `plus`  ((fromNatural 19) `times` (x2 `times` (x3 `times` (x4 `times` (x5 `times` x6)))))  `plus`  ((fromNatural 18) `times` (x3 `times` (x4 `times` (x5 `times` (x6 `times` x7)))))  `plus`  
-      ((fromNatural 13) `times` (x4 `times` (x5 `times` (x6 `times` (x7 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x7 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 `times` (x7 `times` (x8 `times` (x9 `times` x10)))))  `plus`  
-      ((fromNatural 14) `times` (x7 `times` (x8 `times` (x9 `times` (x10 `times` x11)))))  `plus`  ((fromNatural 13) `times` (x8 `times` (x9 `times` (x10 `times` (x11 `times` x12)))))  `plus`  ((fromNatural 12) `times` (x9 `times` (x10 `times` (x11 `times` (x12 `times` x13)))))  `plus`  
-      ((fromNatural 15) `times` (x10 `times` (x11 `times` (x12 `times` (x13 `times` x14)))))  `plus`  ((fromNatural 10) `times` (x11 `times` (x12 `times` (x13 `times` (x14 `times` x15)))))  `plus`  ((fromNatural 9) `times` (x12 `times` (x13 `times` (x14 `times` (x15 `times` x16)))))  `plus`  
-      ((fromNatural 16) `times` (x13 `times` (x14 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x14 `times` (x15 `times` (x16 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
-      ((fromNatural 17) `times` (x16 `times` (x17 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x19 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
+      ((fromNatural 13) `times` (x4 `times` (x4 `times` (x6 `times` (x7 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x16 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 `times` (x7 `times` (x8 `times` (x9 `times` x10)))))  `plus`  
+      ((fromNatural 14) `times` (x7 `times` (x8 `times` (x9 `times` (x10 `times` x11)))))  `plus`  ((fromNatural 13) `times` (x7 `times` (x9 `times` (x10 `times` (x11 `times` x12)))))  `plus`  ((fromNatural 12) `times` (x9 `times` (x10 `times` (x11 `times` (x12 `times` x13)))))  `plus`  
+      ((fromNatural 15) `times` (x10 `times` (x11 `times` (x12 `times` (x13 `times` x14)))))  `plus`  ((fromNatural 10) `times` (x12 `times` (x12 `times` (x13 `times` (x14 `times` x15)))))  `plus`  ((fromNatural 9) `times` (x12 `times` (x13 `times` (x14 `times` (x15 `times` x16)))))  `plus`  
+      ((fromNatural 16) `times` (x13 `times` (x14 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x15 `times` (x15 `times` (x15 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
+      ((fromNatural 17) `times` (x16 `times` (x17 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x1 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
       ((fromNatural 18) `times` (x19 `times` x20))  `plus`  ((fromNatural 3) `times` x20) `plus` 
       ((fromNatural 20) `times` (x1 `times` (x2 `times` (x3 `times` (x4 `times` x5))))) `plus`  ((fromNatural 19) `times` (x2 `times` (x3 `times` (x4 `times` (x5 `times` x6)))))  `plus`  ((fromNatural 18) `times` (x3 `times` (x4 `times` (x5 `times` (x6 `times` x7)))))  `plus`  
-      ((fromNatural 17) `times` (x4 `times` (x5 `times` (x6 `times` (x7 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x7 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 ))
+      ((fromNatural 17) `times` (x4 `times` (x11 `times` (x6 `times` (x7 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x7 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 ))
 
 sizedTest20' :: forall d. Semiring d => Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d
 sizedTest20' x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 x20 = 
@@ -147,6 +181,49 @@ sizedTest20' x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 
       ((fromNatural 8) `times` (x13 `times` (x14 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x14 `times` (x15 `times` (x16 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
       ((fromNatural 7) `times` (x16 `times` (x17 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x19 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
       ((fromNatural 4) `times` (x19 `times` x20))  `plus`  ((fromNatural 3) `times` x20)
+
+sizedTest20N240' :: forall d. Semiring d => Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d
+sizedTest20N240' x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 x20 = 
+      ((fromNatural 20) `times` (x1 `times` (x2 `times` (x3 `times` (x4 `times` x5))))) `plus`  ((fromNatural 19) `times` (x2 `times` (x3 `times` (x4 `times` (x5 `times` x6)))))  `plus`  ((fromNatural 18) `times` (x3 `times` (x4 `times` (x5 `times` (x6 `times` x7)))))  `plus`  
+      ((fromNatural 17) `times` (x4 `times` (x5 `times` (x6 `times` (x11 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x7 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 `times` (x7 `times` (x8 `times` (x9 `times` x10)))))  `plus`  
+      ((fromNatural 14) `times` (x7 `times` (x8 `times` (x9 `times` (x10 `times` x11)))))  `plus`  ((fromNatural 13) `times` (x8 `times` (x9 `times` (x10 `times` (x11 `times` x12)))))  `plus`  ((fromNatural 12) `times` (x9 `times` (x10 `times` (x11 `times` (x12 `times` x13)))))  `plus`  
+      ((fromNatural 11) `times` (x10 `times` (x11 `times` (x12 `times` (x13 `times` x14)))))  `plus`  ((fromNatural 10) `times` (x11 `times` (x12 `times` (x13 `times` (x14 `times` x15)))))  `plus`  ((fromNatural 9) `times` (x12 `times` (x13 `times` (x14 `times` (x15 `times` x16)))))  `plus`  
+      ((fromNatural 8) `times` (x13 `times` (x14 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x14 `times` (x15 `times` (x16 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
+      ((fromNatural 7) `times` (x16 `times` (x17 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x19 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
+      ((fromNatural 4) `times` (x19 `times` x20))  `plus`  ((fromNatural 3) `times` (x20 `times` (x11 `times` (x5 `times` x1)))) `plus` ((fromNatural 56) `times` (x5 `times` (x6 `times` (x1 `times` (x19 `times` x18))))) `plus` x3 `plus` 
+      ((fromNatural 11) `times` (x1 `times` (x2 `times` (x3 `times` (x4 `times` x5))))) `plus`  ((fromNatural 19) `times` (x2 `times` (x5 `times` (x4 `times` (x5 `times` x6)))))  `plus`  ((fromNatural 18) `times` (x3 `times` (x4 `times` (x5 `times` (x6 `times` x7)))))  `plus`  
+      ((fromNatural 12) `times` (x4 `times` (x5 `times` (x6 `times` (x7 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x15 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 `times` (x7 `times` (x8 `times` (x9 `times` x10)))))  `plus`  
+      ((fromNatural 13) `times` (x7 `times` (x7 `times` (x9 `times` (x10 `times` x11)))))  `plus`  ((fromNatural 13) `times` (x5 `times` (x9 `times` (x10 `times` (x11 `times` x12)))))  `plus`  ((fromNatural 12) `times` (x9 `times` (x10 `times` (x11 `times` (x12 `times` x13)))))  `plus`  
+      ((fromNatural 14) `times` (x10 `times` (x12 `times` (x12 `times` (x13 `times` x14)))))  `plus`  ((fromNatural 10) `times` (x11 `times` (x12 `times` (x13 `times` (x14 `times` x15)))))  `plus`  ((fromNatural 9) `times` (x12 `times` (x13 `times` (x14 `times` (x15 `times` x16)))))  `plus`  
+      ((fromNatural 15) `times` (x13 `times` (x1 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x14 `times` (x15 `times` (x16 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
+      ((fromNatural 16) `times` (x16 `times` (x5 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x6 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
+      ((fromNatural 17) `times` (x19 `times` x20))  `plus` ((fromNatural 3) `times` (x20 `times` (x9 `times` (x4 `times` x1)))) `plus` ((fromNatural 56) `times` (x6 `times` (x6 `times` (x1 `times` (x20 `times` x18))))) `plus` x3  
+
+sizedTest20N360' :: forall d. Semiring d => Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d -> Expr d
+sizedTest20N360' x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 x20 = 
+      ((fromNatural 20) `times` (x1 `times` (x2 `times` (x3 `times` (x4 `times` x5))))) `plus`  ((fromNatural 19) `times` (x2 `times` (x3 `times` (x4 `times` (x5 `times` x6)))))  `plus`  ((fromNatural 18) `times` (x3 `times` (x4 `times` (x5 `times` (x6 `times` x7)))))  `plus`  
+      ((fromNatural 17) `times` (x4 `times` (x5 `times` (x6 `times` (x11 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x7 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 `times` (x7 `times` (x8 `times` (x9 `times` x10)))))  `plus`  
+      ((fromNatural 14) `times` (x7 `times` (x8 `times` (x9 `times` (x10 `times` x11)))))  `plus`  ((fromNatural 13) `times` (x8 `times` (x9 `times` (x10 `times` (x11 `times` x12)))))  `plus`  ((fromNatural 12) `times` (x9 `times` (x10 `times` (x11 `times` (x12 `times` x13)))))  `plus`  
+      ((fromNatural 11) `times` (x10 `times` (x11 `times` (x12 `times` (x13 `times` x14)))))  `plus`  ((fromNatural 10) `times` (x11 `times` (x12 `times` (x13 `times` (x14 `times` x15)))))  `plus`  ((fromNatural 9) `times` (x12 `times` (x13 `times` (x14 `times` (x15 `times` x16)))))  `plus`  
+      ((fromNatural 8) `times` (x13 `times` (x14 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x14 `times` (x15 `times` (x16 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
+      ((fromNatural 7) `times` (x16 `times` (x17 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x19 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
+      ((fromNatural 4) `times` (x19 `times` x20))  `plus`  ((fromNatural 3) `times` x20) `plus` 
+      ((fromNatural 11) `times` (x1 `times` (x2 `times` (x3 `times` (x4 `times` x5))))) `plus`  ((fromNatural 19) `times` (x2 `times` (x5 `times` (x4 `times` (x5 `times` x6)))))  `plus`  ((fromNatural 18) `times` (x3 `times` (x4 `times` (x5 `times` (x6 `times` x7)))))  `plus`  
+      ((fromNatural 12) `times` (x4 `times` (x5 `times` (x6 `times` (x7 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x15 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 `times` (x7 `times` (x8 `times` (x9 `times` x10)))))  `plus`  
+      ((fromNatural 13) `times` (x7 `times` (x7 `times` (x9 `times` (x10 `times` x11)))))  `plus`  ((fromNatural 13) `times` (x5 `times` (x9 `times` (x10 `times` (x11 `times` x12)))))  `plus`  ((fromNatural 12) `times` (x9 `times` (x10 `times` (x11 `times` (x12 `times` x13)))))  `plus`  
+      ((fromNatural 14) `times` (x10 `times` (x12 `times` (x12 `times` (x13 `times` x14)))))  `plus`  ((fromNatural 10) `times` (x11 `times` (x12 `times` (x13 `times` (x14 `times` x15)))))  `plus`  ((fromNatural 9) `times` (x12 `times` (x13 `times` (x14 `times` (x15 `times` x16)))))  `plus`  
+      ((fromNatural 15) `times` (x13 `times` (x1 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x14 `times` (x15 `times` (x16 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
+      ((fromNatural 16) `times` (x16 `times` (x5 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x6 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
+      ((fromNatural 17) `times` (x19 `times` x20))  `plus`  ((fromNatural 3) `times` x20) `plus`
+      ((fromNatural 12) `times` (x1 `times` (x2 `times` (x3 `times` (x4 `times` x5))))) `plus`  ((fromNatural 19) `times` (x2 `times` (x3 `times` (x4 `times` (x5 `times` x6)))))  `plus`  ((fromNatural 18) `times` (x3 `times` (x4 `times` (x5 `times` (x6 `times` x7)))))  `plus`  
+      ((fromNatural 13) `times` (x4 `times` (x4 `times` (x6 `times` (x7 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x16 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 `times` (x7 `times` (x8 `times` (x9 `times` x10)))))  `plus`  
+      ((fromNatural 14) `times` (x7 `times` (x8 `times` (x9 `times` (x10 `times` x11)))))  `plus`  ((fromNatural 13) `times` (x7 `times` (x9 `times` (x10 `times` (x11 `times` x12)))))  `plus`  ((fromNatural 12) `times` (x9 `times` (x10 `times` (x11 `times` (x12 `times` x13)))))  `plus`  
+      ((fromNatural 15) `times` (x10 `times` (x11 `times` (x12 `times` (x13 `times` x14)))))  `plus`  ((fromNatural 10) `times` (x12 `times` (x12 `times` (x13 `times` (x14 `times` x15)))))  `plus`  ((fromNatural 9) `times` (x12 `times` (x13 `times` (x14 `times` (x15 `times` x16)))))  `plus`  
+      ((fromNatural 16) `times` (x13 `times` (x14 `times` (x15 `times` (x16 `times` x17)))))  `plus`  ((fromNatural 7) `times` (x15 `times` (x15 `times` (x15 `times` (x17 `times` x18)))))  `plus`  ((fromNatural 6) `times` (x15 `times` (x16 `times` (x17 `times` (x18 `times` x19)))))  `plus`  
+      ((fromNatural 17) `times` (x16 `times` (x17 `times` (x18 `times` (x19 `times` x20)))))  `plus`  ((fromNatural 6) `times` (x17 `times` (x18 `times` (x1 `times` x20))))  `plus`  ((fromNatural 5) `times` x18 `times` (x19 `times` x20))  `plus`  
+      ((fromNatural 18) `times` (x19 `times` x20))  `plus`  ((fromNatural 3) `times` x20) `plus` 
+      ((fromNatural 20) `times` (x1 `times` (x2 `times` (x3 `times` (x4 `times` x5))))) `plus`  ((fromNatural 19) `times` (x2 `times` (x3 `times` (x4 `times` (x5 `times` x6)))))  `plus`  ((fromNatural 18) `times` (x3 `times` (x4 `times` (x5 `times` (x6 `times` x7)))))  `plus`  
+      ((fromNatural 17) `times` (x4 `times` (x11 `times` (x6 `times` (x7 `times` x8)))))  `plus`  ((fromNatural 16) `times` (x5 `times` (x6 `times` (x7 `times` (x8 `times` x9)))))  `plus`  ((fromNatural 15) `times` (x6 ))
 
 sizedTest60 :: forall d. Semiring d => SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d 
                                     -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d -> SExpr d 
@@ -236,11 +313,20 @@ exprSizedTestStaged20 = instr 0 (sizedTest20 @Double)
 exprSizedTestStaged20N360 :: SExpr Double
 exprSizedTestStaged20N360 = instr 0 (sizedTest20N360 @Double)
 
+exprSizedTestStaged20N240 :: SExpr Double
+exprSizedTestStaged20N240 = instr 0 (sizedTest20N240 @Double)
+
 exprSizedTestStaged60 :: SExpr Double
 exprSizedTestStaged60 = instr 0 (sizedTest60 @Double)
 
 exprSizedTestStaged20Basic :: Expr Double
 exprSizedTestStaged20Basic = instr' 0 (sizedTest20' @Double)
+
+exprSizedTestStaged20N240Basic :: Expr Double
+exprSizedTestStaged20N240Basic = instr' 0 (sizedTest20N240' @Double)
+
+exprSizedTestStaged20N360Basic :: Expr Double
+exprSizedTestStaged20N360Basic = instr' 0 (sizedTest20N360' @Double)
 
 der'' :: SpliceQ Double -> SpliceQ Double -> SpliceQ Double -> SpliceQ [Double]
 der'' x y z = 
@@ -264,13 +350,28 @@ der20 z =
 
 der20Basic :: [SpliceQ Double] -> SpliceQ [Double]
 der20Basic z = 
-      let f = snd <$> toList (testAdSB20 SB.reverseADEndoStaged z) -- :: Double -> Map Double (SpliceQ Double)
+      let f = snd <$> toList (testAdSB20 SB.reverseADEndoStaged z)
       in listToSplice f
+
+der20N240 :: SpliceQ [Double] -> (SpliceQ [Double])
+der20N240 z = 
+      let f = snd <$> toList (testAdStaged20N240 reverseADEndoStaged) 
+      in codeGenerateZeroLvl z $ (opt' <$> f)
 
 der20N360 :: SpliceQ [Double] -> (SpliceQ [Double])
 der20N360 z = 
-      let f = snd <$> toList (testAdStaged20N360 reverseADEndoStaged) -- :: Double -> Map Double (SpliceQ Double)
+      let f = snd <$> toList (testAdStaged20N360 reverseADEndoStaged) 
       in codeGenerateZeroLvl z $ (opt' <$> f)
+
+der20N240Basic :: [SpliceQ Double] -> (SpliceQ [Double])
+der20N240Basic z = 
+      let f = snd <$> toList (testAdSB20N240 SB.reverseADEndoStaged z)
+      in listToSplice f
+
+der20N360Basic :: [SpliceQ Double] -> (SpliceQ [Double])
+der20N360Basic z = 
+      let f = snd <$> toList (testAdSB20N360 SB.reverseADEndoStaged z)
+      in listToSplice f
 
 der60 :: SpliceQ [Double] -> (SpliceQ [Double])
 der60 z = 
