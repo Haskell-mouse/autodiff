@@ -117,6 +117,12 @@ benchmarks:
       - microlens
       - microlens-th
       - dependent-sum
+      - directory 
+      - vector 
+      - time
+      - mwc-random
+      - tuple
+      - ad
     ghc-options:
       - -O2
       - -rtsopts

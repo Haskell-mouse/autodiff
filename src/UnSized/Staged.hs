@@ -20,8 +20,6 @@ import qualified Language.Haskell.TH.Syntax as TH
 
 import Control.Monad.IO.Class (liftIO)
 
-import Unsafe.Coerce
-
 import UnSized.UnSized
 
 --import Data.Semiring
@@ -48,7 +46,7 @@ instance Semiring (SCont (SExpr Double) (Hom (SExpr Double) (Endo (Sparse k (SEx
                            let (Hom df1) = tan1
                                (Hom df2) = tan2
                 --               pr1' = $$pr1
-                           in (times pr1 pr2, Hom (\grad -> ((df2 (pr1 `times` grad)) <> (df1 (grad `times` (pr2)))) )))
+                           in (LetBind [((-1), times pr1 pr2)] (LVar (-1)), Hom (\grad -> ((df2 (pr1 `times` grad)) <> (df1 (grad `times` (pr2)))) )))
         in Cont $ \k -> f1 (\x -> f2 (\y -> k (p x y)))
 {-}
 optPlus :: SpliceQ Double -> SpliceQ Double -> SpliceQ Double 
@@ -86,11 +84,12 @@ optMult f s =
 
 reverseADEndoStaged ::
   forall v d.
-  (Ord v, Semiring d, Semigroup d, Semiring
-                          (SCont (SExpr d) (Hom (SExpr d) (Endo (Sparse v (SExpr d))) ))) =>
-  (v -> (SExpr d)) ->
+  (Semiring d, Semigroup d, Semiring
+                          (SCont (SExpr d) (Hom (SExpr d) (Endo (Sparse Nat (SExpr d))) )), 
+                          Convertable v (SCont (SExpr d) (Hom (SExpr d) (Endo (Sparse Nat (SExpr d))) ))) =>
+  (Nat -> (SExpr d)) ->
   SExpr v ->
-  Map v (SExpr d)
+  Map Nat (SExpr d)
 reverseADEndoStaged env expr =
   let (Cont f) = (eval' env' expr)
   in  f (\(_, (sRev)) -> 
@@ -99,19 +98,23 @@ reverseADEndoStaged env expr =
             in let Sparse mmap = sMmap
                    in mmap)
   where
-    env' :: Bool -> v -> SCont (SExpr d) (Hom (SExpr d) (Endo (Sparse v (SExpr d))))
-    env' True v = 
+    env' :: Nat -> SCont (SExpr d) (Hom (SExpr d) (Endo (Sparse Nat (SExpr d))))
+    env' v = 
       let tan = Hom (\grad -> Endo $ \acc -> insertWithSparse plus v grad acc)
       in Cont (\f -> f (env v, tan))
-    env' False v = 
-      let tan = Hom (\grad -> Endo $ \acc -> acc)
-      in Cont (\f -> f (env v, tan))
+
+instance (Convertable v d, Semiring d) => Convertable v (SCont (SExpr d) (Hom (SExpr d) (Endo (Sparse Nat (SExpr d))))) where 
+  cast v = 
+    let tan = Hom (\grad -> Endo $ \acc -> acc)
+    in Cont (\f -> f (Val $ cast v, tan))
+
 
 type AutoDiffStagedType =
   forall v d.
   (Ord v, Semiring d, Semigroup d, Semiring
-                          (SCont (SExpr d) (Hom (SExpr d) (Endo (Sparse v (SExpr d))))) 
+                          (SCont (SExpr d) (Hom (SExpr d) (Endo (Sparse Nat (SExpr d))))),
+                          Convertable v (SCont (SExpr d) (Hom (SExpr d) (Endo (Sparse Nat (SExpr d))) ))
   ) =>
-  (v -> (SExpr d)) ->
+  (Nat -> (SExpr d)) ->
   SExpr v ->
-  (Map v (SExpr d))
+  (Map Nat (SExpr d))

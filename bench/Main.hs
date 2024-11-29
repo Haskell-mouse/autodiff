@@ -1,3 +1,6 @@
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE ViewPatterns #-}
+
 module Main (main) where
 
 import Criterion.Main
@@ -12,114 +15,250 @@ import StagedTests
 import Data.Semigroup
 import GHC.TypeLits
 import Numeric.LinearAlgebra.Static (fromList)
+import UnSized.StagedTest 
+
+import Numeric.Backprop
+import Data.Tuple.Curry
+
+import Numeric.AD.Mode.Kahn.Double
 
 main :: IO ()
-main = defaultMain [ {-
-           bgroup "eval" [
-              env setupBackpropEnv    $ \tup ->
-                  bench "backprop"    $ nf (uncurry (evalBP2 backpropTest)) tup
-           ,  env setupSizedEnv       $ \tup ->
-                  bench "ours"        $ nf (uncurry sizedTest) tup
-           ,  env setupSizedEnv       $ \ ~(net, input) ->
-                  bench "ours (dmap)" $ let dmap = mapFromNet net
-                                         in nf (uncurry sizedDMapTest) (dmap, input)
-           ]
-       ,   bgroup "eval (dup)" [
-              env setupBackpropEnv    $ \tup ->
-                  bench "backprop"    $ nf (uncurry (evalBP2 backpropDupTest)) tup
-           ,  env setupSizedEnv       $ \tup ->
-                  bench "ours"        $ nf (uncurry sizedDupTest) tup
-           ,  env setupSizedEnv       $ \ ~(net, input) ->
-                  bench "ours (dmap)" $ let dmap = mapFromNet net
-                                         in nf (uncurry sizedDMapDupTest) (dmap, input)
-           ], -}
-           bgroup "derive" [
-              env setupBackpropEnv         $ \ ~(net, input) ->
-                  bench "backprop"         $ nf (gradBP (flip backpropTest (auto input))) net
-           ,  env setupSizedEnv            $ \ ~(net, input) ->
-                  bench "ours"             $ nf (netFromMap . reverseAD (`var2Getter` net)) (exprSizedTest input)
---           , env setupSizedNet             $ \ net ->
---                  bench "ours + th"        $ nf (netFromMap . $$(testAdStaged reverseADStaged)) net
-           ,  env setupSizedEnv            $ \ ~(net, input) ->
-                  bench "ours +endo"       $ nf (netFromMap . reverseADEndo (flip var2Getter net)) (exprSizedTest input)
-           , env setupSizedNet             $ \ net ->
-                  bench "ours + endo + th" $ nf (netFromMap . $$(testAdStaged reverseADEndoStaged)) net
+main = defaultMain [ 
+       bgroup "three vars func" [
+              bench "Pure"   $ nf (uncurryN der') (12.5, 2, 1),
+              bench "TH"     $ nf (uncurryN (\x y z -> $$(der'' [|| x ||] [|| y ||] [|| z ||]))) (12.5, 2, 1),
+              bench "TH+Exp" $ nf (uncurryN (\x y z -> $$(der [|| [x,y,z] ||]))) (12.5, 2, 1),
+              bench "BackPropagate"     $ nf (uncurry (gradBP2 (\x y -> 2*y + 18*(y*x*x*x + 2*x*x) + 3*x + 10))) (12.5 :: Double, 2 :: Double),
+              bench "ADLib"             $ nf (grad (\[x,y,z] -> 2*y + 18*(y*x*x*x + 2*x*x) + 3*x + 10)) [12.5, 2, 1]
+              ],
+
+       bgroup "eval20N109" [
+              bench "TH" $ nf (uncurryN (\x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 x20 -> $$(der20Basic [[|| x1 ||], [|| x2 ||], [|| x3 ||], [|| x4 ||], [|| x5 ||], [|| x6 ||], [|| x7 ||], [|| x8 ||], [|| x9 ||], [|| x10 ||], [|| x11 ||], [|| x12 ||], [|| x13 ||], [|| x14 ||], [|| x15 ||], [|| x16 ||], [|| x17 ||], [|| x18 ||], [|| x19 ||] , [|| x20 ||]] ))) (1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10),
+              bench "TH+Exp" $ nf (uncurryN (\x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 x20 -> $$(der20 [|| [x1,x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20] ||]))) (1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10),
+              bench "BackPropagate" $ nf (gradBP f20) ([1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10] :: [Double]),   
+              bench "ADLib" $ nf f20AD ([1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10] :: [Double])
+                       ] ,
+       bgroup "eval20N360" [
+              bench "TH" $ nf (uncurryN (\x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 x20 -> $$(der20Basic [[|| x1 ||], [|| x2 ||], [|| x3 ||], [|| x4 ||], [|| x5 ||], [|| x6 ||], [|| x7 ||], [|| x8 ||], [|| x9 ||], [|| x10 ||], [|| x11 ||], [|| x12 ||], [|| x13 ||], [|| x14 ||], [|| x15 ||], [|| x16 ||], [|| x17 ||], [|| x18 ||], [|| x19 ||] , [|| x20 ||]] ))) (1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10),
+              bench "TH+Exp" $ nf (uncurryN (\x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 x20 -> $$(der20N360 [|| [x1,x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20] ||]))) (1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10),
+              bench "BackPtopagate" $ nf (gradBP f20N360) ([1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10] :: [Double]),
+              bench "ADLib" $ nf f20ADN360 ([1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10] :: [Double])
+       ],
+       bgroup "eval60N360" [
+              bench "TH+Exp" $ nf ((\[x1, x2, x3, x4, x5, x6, x7, x8, x9, x10,
+                                              x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, 
+                                              x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, 
+                                              x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, 
+                                              x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, 
+                                              x51, x52, x53, x54, x55, x56, x57, x58, x59, x60] -> $$(der60 [|| [x1,x2, x3, x4,x5,x6,x7,x8,x9,x10,x11,x12, x13, x14,x15,x16,x17,x18,x19,x20,x21,x22, x23, x24,x25,x26,x27,x28,x29,x30,x31,x32, x33, x34,x35,x36,x37,x38,x39,x40,x41,x42, x43, x44,x45,x46,x47,x48,x49,x50,x51,x52, x53, x54,x55,x56,x57,x58,x59,x60] ||]))) ([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60] :: [Double]), 
+              bench "BackPropagate" $ nf (gradBP f60) ([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60] :: [Double]),
+              bench "ADLib" $ nf f60AD ([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60] :: [Double])
+              ]       
+       ]      
+
+f20 (sequenceVar->[x1,x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20]) = 
+      20*x1*x2*x3*x4*x5 + 19*x2*x3*x4*x5*x6 + 18*x3*x4*x5*x6*x7 + 
+      17*x4*x5*x6*x7*x8 + 16*x5*x6*x7*x8*x9 + 15*x6*x7*x8*x9*x10 + 
+      14*x7*x8*x9*x10*x11 + 13*x8*x9*x10*x11*x12 + 12*x9*x10*x11*x12*x13 + 
+      11*x10*x11*x12*x13*x14 + 10*x11*x12*x13*x14*x15 + 9*x12*x13*x14*x15*x16 + 
+      8*x13*x14*x15*x16*x17 + 7*x14*x15*x16*x17*x18 + 6*x15*x16*x17*x18*x19 + 
+      7*x16*x17*x18*x19*x20 + 6*x17*x18*x19*x20 + 5*x18*x19*x20 + 
+      4*x19*x20 + 3*x20
+
+f20N360 (sequenceVar->[x1,x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20]) = 
+      20*x1*x2*x3*x4*x5 + 19*x2*x3*x4*x5*x6 + 18*x3*x4*x5*x6*x7 + 
+      17*x4*x5*x6*x7*x8 + 16*x5*x6*x7*x8*x9 + 15*x6*x7*x8*x9*x10 + 
+      14*x7*x8*x9*x10*x11 + 13*x8*x9*x10*x11*x12 + 12*x9*x10*x11*x12*x13 + 
+      11*x10*x11*x12*x13*x14 + 10*x11*x12*x13*x14*x15 + 9*x12*x13*x14*x15*x16 + 
+      8*x13*x14*x15*x16*x17 + 7*x14*x15*x16*x17*x18 + 6*x15*x16*x17*x18*x19 + 
+      7*x16*x17*x18*x19*x20 + 6*x17*x18*x19*x20 + 5*x18*x19*x20 + 
+      4*x19*x20 + 3*x20 + 
+      20*x1*x2*x3*x4*x5 + 19*x2*x3*x4*x5*x6 + 18*x3*x4*x5*x6*x7 + 
+      17*x4*x5*x6*x7*x8 + 16*x5*x6*x7*x9*x9 + 15*x11*x7*x8*x9*x10 + 
+      14*x7*x8*x9*x10*x11 + 13*x8*x9*x10*x11*x12 + 12*x9*x10*x11*x12*x13 + 
+      11*x10*x11*x12*x13*x14 + 10*x11*x12*x13*x14*x15 + 9*x12*x13*x14*x15*x16 + 
+      8*x15*x14*x15*x16*x17 + 7*x14*x11*x16*x17*x16 + 6*x15*x16*x17*x18*x19 + 
+      7*x16*x17*x1*x19*x20 + 6*x5*x18*x19*x20 + 5*x18*x19*x20 + 
+      4*x19*x20 + 3*x20 + 
+      26*x1*x2*x3*x4*x5 + 19*x2*x3*x4*x5*x6 + 18*x3*x4*x5*x6*x7 + 
+      17*x4*x5*x6*x7*x8 + 16*x5*x6*x7*x8*x9 + 15*x6*x7*x8*x9*x10 + 
+      14*x7*x6*x9*x10*x11 + 13*x8*x9*x10*x11*x12 + 12*x9*x10*x11*x12*x13 + 
+      11*x10*x11*x12*x13*x14 + 10*x11*x12*x13*x14*x15 + 9*x12*x13*x14*x15*x16 + 
+      8*x11*x14*x15*x16*x17 + 7*x14*x15*x16*x17*x18 + 6*x15*x16*x17*x18*x19 + 
+      7*x11*x17*x18*x19*x20 + 6*x17*x18*x19*x20 + 5*x18*x19*x20 + 
+      4*x20*x20 + 3*x19 + 
+      20*x1*x2*x3*x4*x1 + 18*x2*x3*x4*x5*x6 + 18*x1*x4*x5*x6*x7 + 
+      17*x4*x5*x6*x7*x2 + 16*x5*x6*x7*x8*x9*x3
 
 
 
+f60 (sequenceVar->[x1,x2, x3, x4,x5,x6,x7,x8,x9,x10,
+                x11,x12, x13, x14,x15,x16,x17,x18,x19,x20,
+                x21,x22, x23, x24,x25,x26,x27,x28,x29,x30,
+                x31,x32, x33, x34,x35,x36,x37,x38,x39,x40,
+                x41,x42, x43, x44,x45,x46,x47,x48,x49,x50,
+                x51,x52, x53, x54,x55,x56,x57,x58,x59,x60]) =
+       x22*x36*x50*x39*x53*x44 +
+       x13*x23*x50*x4*x21*x57 + 
+       x9*x17*x23*x12*x53*x16 +
+       x52*x17*x7*x56*x1*x33 +
+       x18*x58*x16*x52*x50*x17 +
+       x6*x43*x14*x2*x59*x46 + 
+       x19*x5*x17*x23*x34*x45 +
+       x35*x34*x8*x56*x2*x13 +
+       x23*x52*x20*x57*x37*x11 + 
+       x15*x53*x14*x19*x36*x23 +
+       x6*x17*x35*x57*x24*x54 +
+       x40*x34*x47*x13*x11*x29 +
+       x57*x38*x56*x6*x54*x20 +
+       x36*x5*x57*x4*x41*x15 +
+       x55*x19*x17*x40*x9*x46 +
+       x22*x58*x39*x3*x17*x44 +
+       x53*x33*x8*x23*x35*x11 +
+       x58*x38*x35*x30*x34*x28 +
+       x11*x57*x42*x58*x39*x17 +
+       x36*x23*x14*x27*x1*x8 +
+       x55*x41*x7*x28*x3*x29 +
+       x16*x35*x56*x44*x26*x28 +
+       x56*x32*x53*x25*x46*x4 +
+       x10*x2*x7*x57*x45*x8 +
+       x27*x58*x60*x21*x6*x37 +
+       x56*x23*x34*x17*x1*x49 +
+       x18*x56*x52*x57*x45*x49 +
+       x37*x40*x23*x5*x47*x41 +
+       x17*x35*x43*x50*x2*x10 +
+       x49*x55*x12*x11*x26*x31 +
+       x16*x58*x48*x30*x14*x24 +
+       x5*x50*x37*x55*x38*x19 +
+       x20*x1*x46*x22*x13*x25 +
+       x56*x52*x25*x23*x16*x37 +
+       x41*x2*x57*x34*x22*x1 +
+       x37*x10*x21*x44*x45*x58 +
+       x14*x22*x27*x9*x51*x7 +
+       x48*x52*x23*x40*x34*x13 +
+       x40*x36*x41*x9*x50*x54 +
+       x39*x9*x41*x50*x33*x21 +
+       x7*x20*x16*x11*x15*x10 +
+       x1*x5*x43*x55*x31*x3 +
+       x19*x39*x41*x6*x53*x1 +
+       x37*x2*x38*x43*x60*x52 +
+       x60*x56*x12*x34*x27*x42 +
+       x19*x54*x52*x28*x32*x38 +
+       x16*x51*x15*x36*x37*x57 +
+       x29*x23*x56*x33*x1*x3 +
+       x34*x40*x4*x1*x26*x12 +
+       x58*x20*x14*x26*x60*x16 +
+       x50*x49*x37*x44*x7*x18 +
+       x37*x24*x59*x33*x42*x23 +
+       x37*x11*x19*x46*x6*x41 +
+       x27*x3*x52*x41*x11*x56 +
+       x36*x3*x24*x25*x37*x38 +
+       x28*x60*x30*x36*x51*x25 +
+       x5*x36*x41*x55*x49*x10 +
+       x45*x53*x49*x39*x17*x14 +
+       x37*x55*x11*x35*x49*x7 +
+       x23*x55*x4*x24*x37*x19
+
+f20AD = grad (\[x1,x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20] -> 
+      20*x1*x2*x3*x4*x5 + 19*x2*x3*x4*x5*x6 + 18*x3*x4*x5*x6*x7 + 
+      17*x4*x5*x6*x7*x8 + 16*x5*x6*x7*x8*x9 + 15*x6*x7*x8*x9*x10 + 
+      14*x7*x8*x9*x10*x11 + 13*x8*x9*x10*x11*x12 + 12*x9*x10*x11*x12*x13 + 
+      11*x10*x11*x12*x13*x14 + 10*x11*x12*x13*x14*x15 + 9*x12*x13*x14*x15*x16 + 
+      8*x13*x14*x15*x16*x17 + 7*x14*x15*x16*x17*x18 + 6*x15*x16*x17*x18*x19 + 
+      7*x16*x17*x18*x19*x20 + 6*x17*x18*x19*x20 + 5*x18*x19*x20 + 
+      4*x19*x20 + 3*x20)
+
+f20ADN360 = grad (\[x1,x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20] -> 
+      20*x1*x2*x3*x4*x5 + 19*x2*x3*x4*x5*x6 + 18*x3*x4*x5*x6*x7 + 
+      17*x4*x5*x6*x7*x8 + 16*x5*x6*x7*x8*x9 + 15*x6*x7*x8*x9*x10 + 
+      14*x7*x8*x9*x10*x11 + 13*x8*x9*x10*x11*x12 + 12*x9*x10*x11*x12*x13 + 
+      11*x10*x11*x12*x13*x14 + 10*x11*x12*x13*x14*x15 + 9*x12*x13*x14*x15*x16 + 
+      8*x13*x14*x15*x16*x17 + 7*x14*x15*x16*x17*x18 + 6*x15*x16*x17*x18*x19 + 
+      7*x16*x17*x18*x19*x20 + 6*x17*x18*x19*x20 + 5*x18*x19*x20 + 
+      4*x19*x20 + 3*x20 + 
+      11*x1*x2*x3*x4*x3 + 19*x2*x3*x4*x5*x6 + 18*x3*x4*x5*x6*x7 + 
+      15*x4*x5*x6*x7*x8 + 16*x5*x6*x7*x8*x9 + 15*x6*x7*x8*x9*x10 + 
+      17*x7*x8*x9*x10*x15 + 13*x8*x9*x10*x11*x12 + 12*x9*x10*x11*x12*x13 + 
+      14*x10*x11*x12*x13*x14 + 10*x11*x12*x13*x14*x15 + 9*x12*x13*x14*x15*x16 + 
+      8*x13*x14*x15*x16*x17 + 7*x14*x15*x16*x17*x18 + 6*x15*x16*x17*x18*x19 + 
+      7*x16*x17*x18*x19*x20 + 6*x17*x18*x19*x20 + 5*x18*x19*x20 + 
+      4*x19*x20 + 3*x20 + 
+      20*x1*x2*x3*x4*x5 + 19*x2*x3*x4*x5*x4 + 18*x3*x4*x5*x6*x7 + 
+      17*x4*x5*x6*x7*x8 + 16*x5*x5*x7*x8*x5 + 15*x6*x7*x8*x9*x10 + 
+      14*x7*x8*x9*x10*x11 + 13*x8*x9*x10*x16*x12 + 12*x9*x10*x11*x12*x13 + 
+      11*x10*x11*x12*x13*x14 + 10*x11*x12*x13*x14*x15 + 9*x12*x13*x14*x15*x16 + 
+      8*x13*x14*x15*x16*x17 + 7*x11*x15*x16*x17*x18 + 6*x15*x16*x17*x18*x19 + 
+      7*x16*x17*x18*x19*x20 + 6*x17*x18*x11*x20 + 5*x18*x19*x20 + 
+      4*x19*x20 + 3*x20 + 
+      20*x1*x2*x3*x4*x5 + 19*x2*x3*x4*x3*x6 + 18*x3*x4*x5*x6*x7 + 
+      17*x4*x5*x6*x7*x8 + 16*x5*x6*x7*x8*x5*x1) 
 
 
 
-
-
-{-           ,  env setupSizedEnv             $ \ ~(net, input) ->
-                  bench "ours (dmap) -expr" $ let dmap = mapFromNet net
-                                               in nf (netFromMap . reverseAD' (flip sizedDMapTest (fromMat input))) dmap
-           ,  env setupSizedEnv             $ \ ~(net, input) ->
-                  bench "ours (dmap) +endo -expr" $ let dmap = mapFromNet net
-                                                     in nf (netFromMap . reverseAD'Endo (flip sizedDMapTest (fromMat input))) dmap
-           ,  env setupSizedEnv             $ \ ~(net, input) ->
-                  bench "ours (dmap) +topo -expr" $ let dmap = mapFromNet net
-                                                     in nf (netFromMap . reverseADTopo (flip sizedDMapTest (fromMat input))) dmap
-           ,  env setupSizedEnv             $ \ ~(net, input) ->
-                  bench "ours (dmap) +endo +topo -expr" $ let dmap = mapFromNet net
-                                                           in nf (netFromMap . reverseADTopoEndo (flip sizedDMapTest (fromMat input))) dmap -}
-           ]
- {-      ,   bgroup "derive (dup)" [
-              env setupBackpropEnv   $ \ ~(net, input) ->
-                  bench "backprop"   $ nf (gradBP (flip backpropDupTest (auto input))) net
-           ,  env setupSizedEnv      $ \ ~(net, input) ->
-                  bench "ours"       $ nf (netFromMap . reverseAD (flip var2Getter net)) (exprSizedDupTest input)
-           ,  env setupSizedEnv      $ \ ~(net, input) ->
-                  bench "ours +endo" $ nf (netFromMap . reverseADEndo (flip var2Getter net)) (exprSizedDupTest input)
-           ,  env setupSizedEnv      $ \ ~(net, input) ->
-                  bench "ours (dmap) -expr" $ let dmap = mapFromNet net
-                                               in nf (netFromMap . reverseAD' (flip sizedDMapDupTest (fromMat input))) dmap
-           ,  env setupSizedEnv      $ \ ~(net, input) ->
-                  bench "ours (dmap) +endo -expr" $ let dmap = mapFromNet net
-                                                     in nf (netFromMap . reverseAD'Endo (flip sizedDMapDupTest (fromMat input))) dmap
-           ,  env setupSizedEnv      $ \ ~(net, input) ->
-                  bench "ours (dmap) +topo -expr" $ let dmap = mapFromNet net
-                                                     in nf (netFromMap . reverseADTopo (flip sizedDMapDupTest (fromMat input))) dmap
-           ,  env setupSizedEnv      $ \ ~(net, input) ->
-                  bench "ours (dmap) +endo +topo -expr" $ let dmap = mapFromNet net
-                                                           in nf (netFromMap . reverseADTopoEndo (flip sizedDMapDupTest (fromMat input))) dmap
-           ]
-       ,   bgroup "derive (trip)" [
-              env setupBackpropEnv   $ \ ~(net, input) ->
-                  bench "backprop"   $ nf (gradBP (flip backpropTripTest (auto input))) net
-           ,  env setupSizedEnv      $ \ ~(net, input) ->
-                  bench "ours (dmap) -expr" $ let dmap = mapFromNet net
-                                               in nf (netFromMap . reverseAD' (flip sizedDMapTripTest (fromMat input))) dmap
-           ,  env setupSizedEnv      $ \ ~(net, input) ->
-                  bench "ours (dmap) +endo -expr" $ let dmap = mapFromNet net
-                                                     in nf (netFromMap . reverseAD'Endo (flip sizedDMapTripTest (fromMat input))) dmap
-           ,  env setupSizedEnv      $ \ ~(net, input) ->
-                  bench "ours (dmap) +topo -expr" $ let dmap = mapFromNet net
-                                                     in nf (netFromMap . reverseADTopo (flip sizedDMapTripTest (fromMat input))) dmap
-           ,  env setupSizedEnv      $ \ ~(net, input) ->
-                  bench "ours (dmap) +endo +topo -expr" $ let dmap = mapFromNet net
-                                                           in nf (netFromMap . reverseADTopoEndo (flip sizedDMapTripTest (fromMat input))) dmap
-           ] -}
-       ,   env setupSizedEnv $ \ ~(net, _) -> bench "netFromMap . mapFromNet" $ nf (netFromMap . mapFromNet) net
-       ]
-{-
-main = defaultMain [
-           env setupBackpropEnv $ \ ~tup@(net, input) -> bgroup "backprop library" [
-              bench "eval"   $ nf (uncurry (evalBP2 backpropTest)) tup
-           ,  bench "derive" $ nf (gradBP (flip backpropTest (auto input))) net
-           ]
-       ,   env setupBackpropEnv $ \ ~tup@(net, input) -> bgroup "backprop library (dup)" [
-              bench "eval"   $ nf (uncurry (evalBP2 backpropDupTest)) tup
-           ,  bench "derive" $ nf (gradBP (flip backpropDupTest (auto input))) net
-           ]
-       ,   env setupSizedEnv $ \ ~tup@(net, input) -> bgroup "our method" [
-              bench "eval"   $ nf (uncurry sizedTest) tup
-           ,  bench "derive" $ nf (netFromMap . reverseAD (flip var2Getter net)) (exprSizedTest input)
-           ]
-       ,   env setupSizedEnv $ \ ~tup@(net, input) -> bgroup "our method (dup)" [
-              bench "eval"   $ nf (uncurry sizedDupTest) tup
-           ,  bench "derive" $ nf (netFromMap . reverseAD (flip var2Getter net)) (exprSizedDupTest input)
-           ]
-       ]
--}
+f60AD :: [Double] -> [Double]
+f60AD = grad (\[x1,x2, x3, x4,x5,x6,x7,x8,x9,x10,
+                x11,x12, x13, x14,x15,x16,x17,x18,x19,x20,
+                x21,x22, x23, x24,x25,x26,x27,x28,x29,x30,
+                x31,x32, x33, x34,x35,x36,x37,x38,x39,x40,
+                x41,x42, x43, x44,x45,x46,x47,x48,x49,x50,
+                x51,x52, x53, x54,x55,x56,x57,x58,x59,x60] -> 
+       x22*x36*x50*x39*x53*x44 +
+       x13*x23*x50*x4*x21*x57 + 
+       x9*x17*x23*x12*x53*x16 +
+       x52*x17*x7*x56*x1*x33 +
+       x18*x58*x16*x52*x50*x17 +
+       x6*x43*x14*x2*x59*x46 + 
+       x19*x5*x17*x23*x34*x45 +
+       x35*x34*x8*x56*x2*x13 +
+       x23*x52*x20*x57*x37*x11 + 
+       x15*x53*x14*x19*x36*x23 +
+       x6*x17*x35*x57*x24*x54 +
+       x40*x34*x47*x13*x11*x29 +
+       x57*x38*x56*x6*x54*x20 +
+       x36*x5*x57*x4*x41*x15 +
+       x55*x19*x17*x40*x9*x46 +
+       x22*x58*x39*x3*x17*x44 +
+       x53*x33*x8*x23*x35*x11 +
+       x58*x38*x35*x30*x34*x28 +
+       x11*x57*x42*x58*x39*x17 +
+       x36*x23*x14*x27*x1*x8 +
+       x55*x41*x7*x28*x3*x29 +
+       x16*x35*x56*x44*x26*x28 +
+       x56*x32*x53*x25*x46*x4 +
+       x10*x2*x7*x57*x45*x8 +
+       x27*x58*x60*x21*x6*x37 +
+       x56*x23*x34*x17*x1*x49 +
+       x18*x56*x52*x57*x45*x49 +
+       x37*x40*x23*x5*x47*x41 +
+       x17*x35*x43*x50*x2*x10 +
+       x49*x55*x12*x11*x26*x31 +
+       x16*x58*x48*x30*x14*x24 +
+       x5*x50*x37*x55*x38*x19 +
+       x20*x1*x46*x22*x13*x25 +
+       x56*x52*x25*x23*x16*x37 +
+       x41*x2*x57*x34*x22*x1 +
+       x37*x10*x21*x44*x45*x58 +
+       x14*x22*x27*x9*x51*x7 +
+       x48*x52*x23*x40*x34*x13 +
+       x40*x36*x41*x9*x50*x54 +
+       x39*x9*x41*x50*x33*x21 +
+       x7*x20*x16*x11*x15*x10 +
+       x1*x5*x43*x55*x31*x3 +
+       x19*x39*x41*x6*x53*x1 +
+       x37*x2*x38*x43*x60*x52 +
+       x60*x56*x12*x34*x27*x42 +
+       x19*x54*x52*x28*x32*x38 +
+       x16*x51*x15*x36*x37*x57 +
+       x29*x23*x56*x33*x1*x3 +
+       x34*x40*x4*x1*x26*x12 +
+       x58*x20*x14*x26*x60*x16 +
+       x50*x49*x37*x44*x7*x18 +
+       x37*x24*x59*x33*x42*x23 +
+       x37*x11*x19*x46*x6*x41 +
+       x27*x3*x52*x41*x11*x56 +
+       x36*x3*x24*x25*x37*x38 +
+       x28*x60*x30*x36*x51*x25 +
+       x5*x36*x41*x55*x49*x10 +
+       x45*x53*x49*x39*x17*x14 +
+       x37*x55*x11*x35*x49*x7 +
+       x23*x55*x4*x24*x37*x19)

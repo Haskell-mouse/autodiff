@@ -1,4 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE InstanceSigs    #-}
 
 module UnSized.UnSized where 
 
@@ -23,9 +24,11 @@ import qualified Language.Haskell.TH as TH
 import qualified Language.Haskell.TH.Syntax as TH
 
 import Control.Monad.IO.Class (liftIO)
+import Unsafe.Coerce
 
 
 --import Data.Semiring
+
 
 class (Semiring d, Monoid e) => Module d e | e -> d where 
     vscale :: d -> e -> e
@@ -51,8 +54,8 @@ type Expr :: Type -> Type
 data Expr v where
     (:*:) :: Expr v -> Expr v -> Expr v
     (:+:) :: Expr v -> Expr v -> Expr v
-    Var :: (Semiring v) => v -> Expr v
---    Const :: v -> Expr v
+    Var :: Nat -> Expr v
+    Const :: Semiring v => v -> Expr v
 
 infixl 7 :*:
 infixl 6 :+:
@@ -63,18 +66,18 @@ data SExpr v where
     (::*::) :: SExpr v -> SExpr v -> SExpr v
     (::+::) :: SExpr v -> SExpr v -> SExpr v
     Val :: (Semiring v) => v -> SExpr v
-    SVar :: v -> SExpr v -- get rid of SpliceQ, move code generation to eval function.
-    -- take a look onto the original code. 
---    LetBind :: Int -> SExpr v -> SExpr v -> SExpr v
-
+    SVar :: Nat -> SExpr v -- get rid of SpliceQ, move code generation to eval function.
+    LVar :: Int -> SExpr v 
+    LetBind :: [(Int,SExpr v)] -> SExpr v -> SExpr v
 
 deriving instance (Show v) => Show (SExpr v)
+deriving instance (Eq v) => Eq (SExpr v)
 
 instance Semiring v => Semiring (Expr v) where
     plus = (:+:)
     times = (:*:)
-    zero = Var zero
-    one = Var one
+    zero = Const zero
+    one = Const one
 
 instance Semiring v => Semiring (SExpr v) where
     plus = (::+::)
@@ -83,15 +86,7 @@ instance Semiring v => Semiring (SExpr v) where
     one = Val one
 
 instance Semigroup (Expr v) where
-    lhs@(_ :+: _)   <> rhs@(_ :+: _)   = lhs :+: rhs
-    lhs@(_ :+: _)   <> rhs@(_ :*: _)   = lhs :+: rhs
-    lhs@(_ :+: _)   <> rhs@(Var _)     = lhs :+: rhs
-    lhs@(_ :*: _)   <> rhs@(_ :+: _)   = lhs :+: rhs
-    lhs@(_ :*: _)   <> rhs@(_ :*: _)   = lhs :+: rhs
-    lhs@(_ :*: _)   <> rhs@(Var _)     = lhs :+: rhs
-    lhs@(Var _)     <> rhs@(_ :+: _)   = lhs :+: rhs
-    lhs@(Var _)     <> rhs@(_ :*: _)   = lhs :+: rhs
-    lhs@(Var _)     <> rhs@(Var _)     = lhs :+: rhs
+    lhs <> rhs = lhs :+: rhs
 
 instance Semigroup (SExpr v) where
     lhs@(_ ::+:: _)   <> rhs@(_ ::+:: _)   = lhs ::+:: rhs
@@ -107,31 +102,64 @@ instance Semigroup (SExpr v) where
     lhs@(SVar _)     <> rhs@(_ ::+:: _)   = lhs ::+:: rhs
     lhs@(SVar _)     <> rhs@(_ ::*:: _)   = lhs ::+:: rhs
     lhs@(SVar _)     <> rhs@(Val _)     = lhs ::+:: rhs
+    lhs <> rhs = lhs ::+:: rhs
 
 
-eval :: (Semiring d)
-     => (v -> d)
+eval :: (Semiring d, Convertable v d)
+     => (Nat -> d)
      -> Expr v
      -> d
 eval env (lhs :+: rhs) = eval env lhs `plus` eval env rhs
 eval env (lhs :*: rhs) = eval env lhs `times` eval env rhs
 eval env (Var v) = env v
-{-
-eval' :: (Semiring d)
-      => (v -> d)
-      -> Expr v 
-      -> d
-eval' env 
--}
+eval env (Const c) = cast c
 
-eval' :: (Semiring d)
-     => (Bool -> v -> d)
+eval'' :: (Semiring d, TH.Lift (v -> d))
+      => (v -> d)
+      -> Expr (SpliceQ v)
+      -> SpliceQ d
+eval'' env (lhs :+: rhs) = eval'' env lhs `plus` eval'' env rhs
+eval'' env (lhs :*: rhs) = eval'' env lhs `times` eval'' env rhs
+eval'' env (Var v)       = undefined
+eval'' env (Const c)     = [|| env $$c ||]
+
+type family PossArg a b :: Bool where 
+    PossArg a a = True 
+    PossArg (a -> b) _ = True 
+    PossArg _ _ = False 
+
+class Instr a r where 
+    instr :: Nat -> a -> r
+
+instance forall a b r c.(a ~ SExpr r, Instr b c) => Instr (a -> b) c where
+    instr n f = instr (n+1) (f (SVar n))
+
+instance forall a f. (a ~ SExpr f) => Instr a a where
+    instr _ f = f
+
+class Instr' a r where 
+    instr' :: Nat -> a -> r
+
+instance forall a b r c.(a ~ Expr r, Instr' b c) => Instr' (a -> b) c where
+    instr' n f = instr' (n+1) (f (Var n))
+
+instance forall a f. (a ~ Expr f) => Instr' a a where
+    instr' _ f = f
+
+class Convertable a b where 
+    cast :: a -> b 
+
+instance forall a b. (a ~ b) => Convertable a b where 
+    cast a = a 
+
+eval' :: (Semiring d, Convertable v d)
+     => (Nat -> d)
      -> SExpr v
      -> d
 eval' env (lhs ::+:: rhs) = eval' env lhs `plus` eval' env rhs
 eval' env (lhs ::*:: rhs) = eval' env lhs `times` eval' env rhs
-eval' env (SVar v) = env True v
-eval' env (Val a) = env False a
+eval' env (SVar v) = env v
+eval' env (Val a) = cast a
 
 
 type Dual :: Type -> Type -> Type

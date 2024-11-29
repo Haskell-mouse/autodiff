@@ -1,6 +1,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module StagedTests (testAdStaged) where
+module StagedTests where
 
 import Data.Dependent.Map (DMap)
 import Env
@@ -13,19 +13,17 @@ import Env
   )
 import Language.Haskell.TH (runIO)
 import Language.Haskell.TH.Syntax.Compat (Code (examineCode), SpliceQ, liftCode)
-import Sized (SizedSemiring, Dual, Hom, Sparse)
+import UnSized.UnSized
 import Sized.LiftInstances ()
-import Sized.Staged
-  ( AutoDiffStagedType,
-    CSpliceQ (CSpliceQ, splice),
-    SCont
-  )
+import UnSized.Staged
 import Data.Monoid (Endo(..))
+import GHC.TypeLits
 
-testAdStaged :: forall d.
-  ( SizedSemiring d,
-    forall tup. Semigroup (d tup),
-    SizedSemiring (SCont (CSpliceQ d) (CSpliceQ (Hom d (Endo (Sparse SizedNetVar d)))))
+{- testAdStaged :: forall v d.
+  ( Semiring d,
+    Semigroup d,Semiring
+                          (SCont (SExpr d) (Hom (SExpr d) (Endo (Sparse Nat (SExpr d))))),
+                          Convertable v (SCont (SExpr d) (Hom (SExpr d) (Endo (Sparse Nat (SExpr d))) ))
   ) =>
   AutoDiffStagedType ->
   SpliceQ (SizedNet d -> DMap SizedNetVar d)
@@ -34,3 +32,5 @@ testAdStaged adFunc = liftCode $ do
   let expression = exprSizedTestStaged input
   examineCode
     [||\net -> $$(adFunc @SizedNetVar (\var -> CSpliceQ [||($$(splice var) `var2Getter` net)||]) expression)||]
+
+-}

@@ -12,41 +12,10 @@ import qualified Numeric.LinearAlgebra as LinAlg (toLists)
 import qualified Numeric.LinearAlgebra.Static as LinAlg
 import Data.Proxy
 import Data.GADT.Show.TH (deriveGShow)
-import Data.Constraint.Extras (ArgDict(..))
+import Data.Constraint.Extras -- (ArgDict(..))
 import Data.Constraint
 
 import Sized
-
-{-
-data Expr v = Var v
-            | FromInteger Integer
-            | Negate (Expr v)
-            | Expr v :+: Expr v
-            | Expr v :*: Expr v
-            | Expr v :/: Expr v
-            deriving Show
-
-infixl 5 :*:
-infixl 4 :+:
-
-instance Num (Expr v) where
-    (+) = (:+:)
-    (*) = (:*:)
-    negate = Negate
-    fromInteger = FromInteger
-
-    signum _ = undefined
-    abs _ = undefined
-
-gen :: (Quote m, Show v) => Expr v -> m Exp
-gen (lhs :+: rhs) = [| $(gen lhs) + $(gen rhs) |]
-gen (lhs :*: rhs) = [| $(gen lhs) + $(gen rhs) |]
-gen (lhs :/: rhs) = [| $(gen lhs) / $(gen rhs) |]
-gen (Var v) = return $ VarE $ mkName $ show v
-gen (Negate e) = [| negate $(gen e) |]
-gen (FromInteger i) = [| fromInteger $lit |]
-    where lit = pure $ LitE $ IntegerL i
--}
 
 getSizes :: forall n m proxy. (KnownNat n, KnownNat m) => proxy '(n, m) -> (Integer, Integer)
 getSizes _ = (natVal (Proxy @n), natVal (Proxy @m))
@@ -80,8 +49,7 @@ instance GCompare Arg where
 
 deriveGShow ''Arg
 
-{-
-genFnExpr :: forall n r m. Quote m => String -> (forall d. SizedSemiring d => d '(n, r) -> d '(1, 1)) -> m [Dec]
+genFnExpr :: forall n r m. (Quote m, KnownNat n, KnownNat r) => String -> (forall d. SizedSemiring d => d '(n, r) -> d '(1, 1)) -> m [Dec]
 genFnExpr genFn fn = do x <- newName "x"
                         let xpat = pure $ VarP x
                         [d| testFn' :: Mat '($nLit, $mLit) -> Mat '(1, 1)
@@ -91,7 +59,6 @@ genFnExpr genFn fn = do x <- newName "x"
           nLit = pure $ LitT (NumTyLit n)
           mLit = pure $ LitT (NumTyLit m)
           (n, m) = getSizes expr
--}
 
 genBody' :: Quote m => String -> Expr Arg tup -> m Exp
 genBody' arg expr = genBody (mkName arg) expr

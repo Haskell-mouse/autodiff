@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.36.0.
+-- This file has been generated from package.yaml by hpack version 0.37.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -30,9 +30,12 @@ library
       Sized
       Sized.LiftInstances
       Sized.Staged
+      UnSized.ExpToCode
       UnSized.Staged
+      UnSized.StagedBasic
       UnSized.StagedTest
       UnSized.UnSized
+      UnSized.Unstaged
       Usage
       Usage2
   other-modules:
@@ -222,6 +225,7 @@ benchmark algebraic-benches
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -O2 -rtsopts -ddump-splices -ddump-to-file
   build-depends:
       QuickCheck
+    , ad
     , autodiff
     , backprop
     , base >=4.7 && <5
@@ -233,13 +237,18 @@ benchmark algebraic-benches
     , dependent-map
     , dependent-sum
     , dependent-sum-template
+    , directory
     , ghc-prim
     , hmatrix
     , hmatrix-backprop
     , microlens
     , microlens-th
+    , mwc-random
     , semirings
     , some
     , template-haskell
     , th-compat
+    , time
+    , tuple
+    , vector
   default-language: Haskell2010
